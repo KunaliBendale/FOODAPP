@@ -25,7 +25,7 @@ const OrderSchema = mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Dish",
         },
-        Qty: Number
+        quantity: Number
     }]
 })
 

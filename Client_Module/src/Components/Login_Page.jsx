@@ -8,27 +8,27 @@ const Login_Page = () => {
   const nav= useNavigate()
 
   const dispatch=useDispatch()
-  const [name,Setname]=useState("")
-  const [password,Setpassword]=useState("")
+  const [Name,Setname]=useState("")
+  const [Password,Setpassword]=useState("")
 
   const data={
-    name,password
+    Name,Password
   }
   
   return (
     <div >
-      <div className="container-fluid d-flex justify-content-center align-items-center vh-100 ">
+      <div className="container-fluid d-flex justify-content-center align-items-center vh-100 mt-5">
         <div className="container  vh-75 p-5 border shadow" style={{ borderRadius: '20px', width: '40%' }}>
           <div>
             <label className="form-label">Enter Username: </label>
             <div>
-              <input type="text" className="form-control" onChange={(e) => { Setname(e.target.value) }}></input>
+              <input type="text" name="Name" className="form-control" onChange={(e) => { Setname(e.target.value) }}></input>
             </div>
           </div>
           <div className="mt-3 mb-4">
             <label className="form-label">Enter Password: </label>
             <div>
-              <input type="text" className="form-control" onChange={(e) => { Setpassword(e.target.value) }}></input>
+              <input type="text" name="Password" className="form-control" onChange={(e) => { Setpassword(e.target.value) }}></input>
             </div>
           </div>
 
