@@ -34,12 +34,11 @@ const All_Dishes = () => {
                                  <h5>{dish.DishName}</h5>
                                  <p>Price : &#8377; {dish.Price} /-</p>
                                  <span>{dish.IsAvailable}</span>
-
                              </div>
 
                             <div className='card-footer'>
                                
-                                <button className='btn btn-outline-primary w-100 mb-2' onClick={()=>{dispatch(addItem(dish,dish.quantity=1))}} >Add To Cart</button>
+                                <button className='btn btn-outline-primary w-100 mb-2' onClick={()=>{dispatch(addItem(dish,dish.quantity=1))}} > Add To Cart </button>
                                 {/* <button className='btn btn-outline-danger w-100 '><MdDeleteForever /> Remove Item</button> */}
                             </div>
                         </div>

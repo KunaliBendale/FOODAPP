@@ -23,7 +23,7 @@ const DisheSchema = mongoose.Schema({
     },
     IsAvailable: {
         type: Boolean,
-        default:true
+        default: true
     }
 })
 

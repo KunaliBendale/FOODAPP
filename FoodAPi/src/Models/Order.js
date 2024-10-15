@@ -7,6 +7,7 @@ const OrderSchema = mongoose.Schema({
     },
     OrderStatus: {
         type: String,
+        default:"Pending",
         required: [true, "Order status is required"]
     },
     TotalAmount: {
@@ -30,5 +31,3 @@ const OrderSchema = mongoose.Schema({
 })
 
 export const Order = mongoose.model("Order", OrderSchema);
-
-

@@ -1,20 +1,20 @@
 {
     "OrderStatus": "pending",
     "TotalAmount": 1000,
-    "No_Of_Items": 1,
+    "NoOfItems": 1,
     "CustomerId": "66f959a3d021ada2220c7685",
     "items": [
         {
             "dishid": "66f95ce6f2a1c9b0e7cceafc",
-            "Qty": 4
+            "quantity": 4
         },
         {
             "dishid": "66f95ce6f2a1c9b0e7cceafc",
-            "Qty": 4
+            "quantity": 4
         },
         {
             "dishid": "66f95ce6f2a1c9b0e7cceafc",
-            "Qty": 4
+            "quantity": 4
         }
     ]
 }
