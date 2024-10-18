@@ -17,7 +17,7 @@ const Login_Page = () => {
   
   return (
     <div >
-      <div className="container-fluid d-flex justify-content-center align-items-center vh-100 mt-5">
+      <div className="container-fluid d-flex justify-content-center align-items-center vh-100 mt-5 ">
         <div className="container  vh-75 p-5 border shadow" style={{ borderRadius: '20px', width: '40%' }}>
           <div>
             <label className="form-label">Enter Username: </label>
@@ -33,7 +33,7 @@ const Login_Page = () => {
           </div>
 
           <div className="d-flex justify-content-center">
-            <button className="btn btn-outline-success w-50" onClick={()=>{dispatch(isLogin(data)) }}>Login</button>
+            <button className="btn btn-outline-success w-50" onClick={()=>{nav('/')} }>Login</button>
 
           </div>
           <div className="d-flex justify-content-end pt-2">

@@ -6,6 +6,8 @@ import axios from 'axios'
 
 const Cart = () => {
   const { cart, carttotal } = useSelector((state) => state.cart)
+  const { userdata } = useSelector((state) => state.user)
+
   const dispatch = useDispatch()
   dispatch(calculatetotal())
 
@@ -20,7 +22,7 @@ const Cart = () => {
     let orderReqData = {
       TotalAmount: carttotal,
       NoOfItems: cart.length,
-      CustomerId: "66fe93d0b9e4ac74d3207887",
+      CustomerId: userdata._id,
       items: finalItems
     }
 

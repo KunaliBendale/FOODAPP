@@ -7,7 +7,7 @@ const Homepage = () => {
         <div style={{ display: 'block', width: "100%" }}>
 
             <Carousel>
-                <Carousel.Item interval={5000} className='vh-100'>
+                <Carousel.Item interval={5000} className='vh-50'>
                     <img
                         className="d-block w-100"
                         src="background1.jpg"
@@ -21,8 +21,9 @@ const Homepage = () => {
                 <Carousel.Item interval={5000}>
                     <img
                         className="d-block w-100 carouselimages"
-                        src="../assets/images/background1.jpg"
+                        src="background2.jpg"
                         alt="Image Two"
+                        style={{backgroundPosition:"cover"}}
                     />
                     <Carousel.Caption className='carouselcaption'>
                         <h3>Label for second slide</h3>
