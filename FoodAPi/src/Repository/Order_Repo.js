@@ -13,7 +13,7 @@ const CreateOrder=async(params)=>{
 const GetOrders=async()=>{
     try {
         const AllOrders=await Order.find()
-        .populate("CustomerId","Name Email")
+        .populate("CustomerId")
         .populate("items.dishid")
         return AllOrders;
     } catch (error) {
@@ -29,7 +29,6 @@ const DelOrder=async(OrderId)=>{
         return DeletedOrder;
     } catch (error) {
         console.log(error);
-
     }
 }
 export {CreateOrder,GetOrders,DelOrder}

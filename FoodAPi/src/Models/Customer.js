@@ -9,7 +9,6 @@ const CustomerSchema = mongoose.Schema({
     Email:{
         type:String,
         required:[true,"Email is required"],
-        match:/^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/
     },
     Mobile:{
         type:String,

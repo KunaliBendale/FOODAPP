@@ -1,5 +1,5 @@
 import { Customer } from "../Models/Customer.js";
-import { uploadOnCloudinary ,deletefromCloudinary} from "../MiddleWare/Cloudinary_middleware.js";
+import { uploadOnCloudinary, deletefromCloudinary } from "../MiddleWare/Cloudinary_middleware.js";
 import fs from "fs/promises"
 
 const CreateCustomer = async (params) => {
@@ -7,9 +7,9 @@ const CreateCustomer = async (params) => {
         console.log("create customer called");
         const { Photo } = params;
         const cloudinaryres = await uploadOnCloudinary(Photo)
-        params.Photo=cloudinaryres.secure_url;
-        params.Publicid=cloudinaryres.public_id;
-        
+        params.Photo = cloudinaryres.secure_url;
+        params.Publicid = cloudinaryres.public_id;
+
         const NewCustomer = await Customer.create(params);
         fs.unlink(Photo)
         console.log(NewCustomer);
@@ -58,5 +58,21 @@ const UpdateMobile = async () => {
     }
 }
 
+const doLogin = async ({ Email, Password }) => {
+    try {
+        let response;
+        let custData = await Customer.findOne({ Email, Password })
+        if (custData) {
+            response = { message: "Login Successful.", data: custData, success: true }
+        } else {
+            response = { message: "Not Register.", data: custData, success: false }
+        }
+        return response
 
-export { CreateCustomer, DelCustomer, UpdateMobile, GetCustomer }
+    } catch (error) {
+        return error
+    }
+}
+
+
+export { CreateCustomer, DelCustomer, doLogin, UpdateMobile, GetCustomer }
