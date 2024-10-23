@@ -11,7 +11,7 @@ const CreateCustomer = async (params) => {
         params.Publicid = cloudinaryres.public_id;
 
         const NewCustomer = await Customer.create(params);
-        fs.unlink(Photo)
+        fs.unlink(Photo);
         console.log(NewCustomer);
         return NewCustomer;
     } catch (error) {
@@ -58,6 +58,7 @@ const UpdateMobile = async () => {
     }
 }
 
+
 const doLogin = async ({ Email, Password }) => {
     try {
         let response;
@@ -75,4 +76,29 @@ const doLogin = async ({ Email, Password }) => {
 }
 
 
-export { CreateCustomer, DelCustomer, doLogin, UpdateMobile, GetCustomer }
+const UpdateProfile = async({CustomerId,Name,Mobile,Address,City,State,Pincode})=>{
+    try {
+        const UpdatedProfile = await Customer.findOneAndUpdate(
+            {
+                _id: CustomerId
+            },
+            {
+                Name:Name,
+                Mobile:Mobile,
+                Address:Address,
+                City:City,
+                State:State,
+                Pincode:Pincode,
+            },
+            {
+                new: true
+            })
+        
+        return UpdatedProfile
+    } catch (error) {
+        return error
+    }
+}
+
+
+export { CreateCustomer, DelCustomer, doLogin, UpdateProfile, GetCustomer }

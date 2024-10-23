@@ -1,3 +1,4 @@
+import { Dish } from "../Models/Dishes.js";
 import { CreateDish ,GetDishes,DelDish} from "../Repository/Dishes_Repo.js";
 
 const AddDishes=async(req,res)=>{
@@ -35,4 +36,17 @@ const DeleteDish = async (req,res)=>{
     }    
 }
 
-export {AddDishes,GetAllDishes,DeleteDish}
+const updateDishPrice = async (req, res) => {
+    try {
+        const updatedPrice = await Dish.findOneAndUpdate({
+            _id: req.body.dishid
+        }, {
+            Price: req.body.Price
+        }, { new: true })
+        res.status(200).json(updatedPrice)
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
+
+export {AddDishes,GetAllDishes,DeleteDish,updateDishPrice}

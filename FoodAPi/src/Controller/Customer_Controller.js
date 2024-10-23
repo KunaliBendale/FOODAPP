@@ -1,5 +1,6 @@
 import mongoose from "mongoose";
-import { CreateCustomer, DelCustomer, doLogin, GetCustomer, UpdateMobile } from "../Repository/Customer_Repo.js";
+import { CreateCustomer, DelCustomer, doLogin, GetCustomer, UpdateProfile } from "../Repository/Customer_Repo.js";
+import { Customer } from "../Models/Customer.js";
 
 //Add Customer
 const AddCustomer = async (req, res) => {
@@ -44,17 +45,18 @@ const DeleteCustomer = async (req, res) => {
 }
 
 //Update Customer's Mobile Number
-const UpdateCustomerMobile = async (req, res) => {
+const UpdateCustomerprofile = async (req, res) => {
     try {
-        const Updatedcustomer = await UpdateMobile(req.body);
+       const result = await UpdateProfile(req.body)
+
         res.status(200).json({
-            message: "Customer's Image Updated Successfully..",
-            data: Updatedcustomer
+            data: result
         })
     } catch (error) {
         res.status(500).json(error)
     }
 }
+
 
 const customerLogin = async (req, res) => {
     try {
@@ -65,4 +67,12 @@ const customerLogin = async (req, res) => {
     }
 }
 
-export { AddCustomer, customerLogin, GetAllCustomer, DeleteCustomer, UpdateCustomerMobile }
+
+const UpdatePassword=async(req,res)=>{
+    try {
+        
+    } catch (error) {
+        
+    }
+}
+export { AddCustomer, customerLogin, GetAllCustomer, DeleteCustomer, UpdateCustomerprofile }
