@@ -4,7 +4,8 @@ const initialState = {
     userdata: {},
     register: false,
     login: false,
-    customerId: null
+    customerId: null,
+    logout:false
 }
 
 const UserSlice = createSlice({
@@ -13,25 +14,26 @@ const UserSlice = createSlice({
     reducers: {
 
         isLogin: (state, action) => {
+            state.userdata = action.payload
+            state.login = true
 
-            if (state.userdata.Name == action.payload.Name && state.userdata.Password == action.payload.Password) {
-                state.login = true;
-                alert("login is successful")
-            } else {
-                alert("incorrect username or password")
-            }
         },
 
-        
+
         isRegister: (state, action) => {
             state.userdata = action.payload
             state.register = true
+        },
+        isLogout: (state) => {
+            state.userdata = {}
+            state.logout=true
+            alert("logged out") 
         }
     }
 
 })
 
 
-export const { isLogin, isRegister } = UserSlice.actions;
+export const { isLogin, isRegister,isLogout } = UserSlice.actions;
 
 export default UserSlice.reducer;

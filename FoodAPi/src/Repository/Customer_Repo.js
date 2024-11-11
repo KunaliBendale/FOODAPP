@@ -42,22 +42,6 @@ const DelCustomer = async (CustId) => {
     }
 }
 
-const UpdateMobile = async () => {
-    try {
-        const Updated = await Customer.findOneAndUpdate({
-            _id: req.params.CustId,
-        }, {
-            "Mobile": req.body.Mobile,
-        }, {
-            new: true
-        });
-
-        return Updated;
-    } catch (error) {
-        console.log(error)
-    }
-}
-
 
 const doLogin = async ({ Email, Password }) => {
     try {
@@ -76,14 +60,13 @@ const doLogin = async ({ Email, Password }) => {
 }
 
 
-const UpdateProfile = async({CustomerId,Name,Mobile,Address,City,State,Pincode})=>{
+const UpdateProfile = async({CustomerId,Mobile,Address,City,State,Pincode})=>{
     try {
         const UpdatedProfile = await Customer.findOneAndUpdate(
             {
                 _id: CustomerId
             },
             {
-                Name:Name,
                 Mobile:Mobile,
                 Address:Address,
                 City:City,

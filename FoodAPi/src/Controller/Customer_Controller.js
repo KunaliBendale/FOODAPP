@@ -44,10 +44,48 @@ const DeleteCustomer = async (req, res) => {
     }
 }
 
-//Update Customer's Mobile Number
+const UpdateCustomerMobile = async (req,res) => {
+    try {
+        const UpdatedMb = await Customer.findOneAndUpdate({
+            _id: req.body.CustomerId,
+        }, {
+            Mobile: req.body.Mobile,
+        }, {
+            new: true
+        });
+
+        res.status(200).json({
+            message: "Customer Updated Successfully..",
+            data: UpdatedMb
+        })
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
+
+const updateCustAddress = async(req,res)=>{
+    try {
+        const UpdatedAd = await Customer.findOneAndUpdate({
+            _id: req.body.CustomerId,
+        }, {
+            Address: req.body.Address,
+        }, {
+            new: true
+        });
+
+        res.status(200).json({
+            message: "Customer Updated Successfully..",
+            data: UpdatedAd
+        })
+    } catch (error) {
+        res.status(500).json(error)
+    }
+}
+
+//Update Customer's Profile
 const UpdateCustomerprofile = async (req, res) => {
     try {
-       const result = await UpdateProfile(req.body)
+        const result = await Customer.findOneAndUpdate(req.body)
 
         res.status(200).json({
             data: result
@@ -68,11 +106,12 @@ const customerLogin = async (req, res) => {
 }
 
 
-const UpdatePassword=async(req,res)=>{
+const UpdatePassword = async (req, res) => {
     try {
-        
+
+
     } catch (error) {
-        
+
     }
 }
-export { AddCustomer, customerLogin, GetAllCustomer, DeleteCustomer, UpdateCustomerprofile }
+export { AddCustomer, customerLogin, GetAllCustomer, DeleteCustomer,updateCustAddress, UpdateCustomerprofile,UpdateCustomerMobile }

@@ -9,7 +9,13 @@ import cors from 'cors'
 
 const app=express();
 ConnectDB();
-app.use(cors())
+// app.use(cors({
+//     origin:'http://localhost:5173',
+//     credentials:true
+
+// }))
+
+app.use(cors());
 app.use(bodyParser.json());
 // const port=process.env.PORT_NO ||5000
 // dotenv.config({path:"/.env"})

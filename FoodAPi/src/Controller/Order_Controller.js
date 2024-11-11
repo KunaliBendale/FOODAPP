@@ -1,5 +1,5 @@
 import { Order } from "../Models/Order.js";
-import { CreateOrder, GetOrders, DelOrder, GetOrdersByCustId } from "../Repository/Order_Repo.js";
+import { CreateOrder, GetOrders, DelOrder, GetOrdersByCustIdStatus ,getOrdersByOrderStatus} from "../Repository/Order_Repo.js";
 
 const AddOrder = async (req, res) => {
     try {
@@ -27,6 +27,20 @@ const GetAllOrders = async (req, res) => {
 }
 
 
+const OrdersByStatus=async(req,res)=>{
+    try {
+        const orders=await getOrdersByOrderStatus(req.body.OrderStatus);
+        res.status(200).json({
+            message: "Orders Are : ",
+            data: orders
+        })
+    } catch (error) {
+        res.status(500).json(error)
+        console.log(error);
+    }
+}
+
+
 const DeleteOrder = async (req, res) => {
     try {
         const DeletedOrder = await DelOrder(req.body.OrderId);
@@ -39,9 +53,9 @@ const DeleteOrder = async (req, res) => {
     }
 }
 
-const GetOrdersById = async (req, res) => {
+const OrderByIdAndStatus = async (req, res) => {
     try {
-        const result = await GetOrdersByCustId(req.body)
+        const result = await GetOrdersByCustIdStatus(req.body)
         res.status(200).json({
             data: result
         })
@@ -72,4 +86,4 @@ const UpdateOrderStatus = async (req, res) => {
 }
 
 
-export { AddOrder, GetAllOrders, DeleteOrder, GetOrdersById, UpdateOrderStatus }
+export { AddOrder, GetAllOrders, DeleteOrder, UpdateOrderStatus ,OrdersByStatus}

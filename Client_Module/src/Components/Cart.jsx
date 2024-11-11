@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { increaseqty, decreaseqty, removeItem, calculatetotal, clearCart } from '../Reduxwork/Cartslice'
 import axios from 'axios'
 
+
 const Cart = () => {
   const { cart, carttotal } = useSelector((state) => state.cart)
   const { userdata } = useSelector((state) => state.user)
@@ -14,7 +15,6 @@ const Cart = () => {
   const placeOrder = async () => {
 
     let finalItems = []
-
     cart.forEach((item) => {
       finalItems.push({ dishid: item._id, quantity: item.quantity })
     })
@@ -43,7 +43,6 @@ const Cart = () => {
 
             <div className="card m-5" style={{ width: '20%' }}>
               <div className="Image-div card-header  " style={{ height: '55%', cursor: 'pointer' }} >
-
                 <img src={dish.Image} width={200}></img>
               </div>
 

@@ -21,6 +21,18 @@ const GetOrders = async () => {
     }
 }
 
+const getOrdersByOrderStatus = async (OrderStatus) => {
+    try {
+        const orders = await Order.find({OrderStatus})
+            .populate("CustomerId")
+            .populate("items.dishid")
+        console.log(orders);
+        return orders
+    } catch (error) {
+        return (error)
+    }
+}
+
 
 const DelOrder = async (OrderId) => {
     try {
@@ -33,9 +45,9 @@ const DelOrder = async (OrderId) => {
 }
 
 
-const GetOrdersByCustId = async ({ CustomerId }) => {
+const GetOrdersByCustIdStatus = async ({ CustomerId ,OrderStatus}) => {
     try {
-        return await Order.find({ CustomerId })
+        return await Order.find({ CustomerId,OrderStatus })
             .populate("CustomerId")
             .populate("items.dishid")
     } catch (error) {
@@ -44,7 +56,7 @@ const GetOrdersByCustId = async ({ CustomerId }) => {
 }
 
 
- 
 
 
-export { CreateOrder, GetOrders, DelOrder, GetOrdersByCustId }
+
+export { CreateOrder, GetOrders, DelOrder, GetOrdersByCustIdStatus, getOrdersByOrderStatus }

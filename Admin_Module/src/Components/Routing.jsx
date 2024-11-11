@@ -6,6 +6,7 @@ import View_Orders from './View_Orders'
 import Reviews from './Reviews'
 import Myoffcanvas from './Myoffcanvas'
 import AddDishes from './Add_Dishes'
+import OrderDetails from './OrderDetails'
 
 
 const Routing = () => {
@@ -19,6 +20,7 @@ const Routing = () => {
             <Route path='/all_dishes' element={<All_Dishes/>}/>
             <Route path='/view_orders' element={<View_Orders/>}/>
             <Route path='/reviews' element={<Reviews/>}/>
+            <Route path='/orderdetails' element={<OrderDetails/>}/>
         </Routes>
         </BrowserRouter>
     </div>

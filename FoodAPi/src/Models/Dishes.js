@@ -24,7 +24,8 @@ const DisheSchema = mongoose.Schema({
     IsAvailable: {
         type: Boolean,
         default: true
-    }
+    },
+   
 })
 
 export const Dish = mongoose.model("Dish", DisheSchema);

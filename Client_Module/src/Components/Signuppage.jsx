@@ -1,8 +1,9 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
-import { isRegister, setUser } from '../Reduxwork/UserSlice'
+import { isRegister } from '../Reduxwork/UserSlice'
 import axios from 'axios'
+import { registerCustomer } from '../apicalls/CustomerApi'
 const Signuppage = () => {
     const nav = useNavigate()
     const dispatch = useDispatch()
@@ -24,18 +25,10 @@ const Signuppage = () => {
         console.log(reqcustomerdata);
 
         try {
-            const result = await axios.post("http://localhost:8080/api/register",
-                reqcustomerdata, {
-                headers: {
-                    'Content-Type': "multipart/form-data"
-                }
-            });
-            
-            dispatch(isRegister(result.data.data));
+            let respomce = await registerCustomer(reqcustomerdata)
+            console.log(respomce);
+            dispatch(isRegister(respomce.data));
             nav(`/login`);
-
-
-
         } catch (error) {
             console.log(error);
 

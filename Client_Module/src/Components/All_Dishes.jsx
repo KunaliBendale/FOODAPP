@@ -20,6 +20,7 @@ const All_Dishes = () => {
     fetchdata();
   }, [])
 
+  
   return (
     <div className="d-flex flex-wrap mt-2 ">
             {
