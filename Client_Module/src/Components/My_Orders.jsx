@@ -10,32 +10,21 @@ import InTransit from './OrderTabs/InTransit';
 import Pending from './OrderTabs/Pending';
 
 const My_Orders = () => {
-  const [order, setorder] = useState([])
+ 
   const navigate = useNavigate()
   const { userdata } = useSelector((state) => state.user)
 
-  useEffect(() => {
-    const fetchorders = async () => {
-      const response = await axios.post("http://localhost:8080/api/getordersbycustid", {
-        CustomerId: userdata._id
-      })
-      console.log(response);
+  // useEffect(() => {
+  //   const fetchorders = async () => {
+  //     const response = await axios.post("http://localhost:8080/api/getordersbycustid", {
+  //       CustomerId: userdata._id
+  //     })
+  //     console.log(response);
 
-      setorder(response.data.data)
-    }
-    fetchorders();
-  }, [])
-
-
-  let deleteOrder = async (OrderId) => {
-    try {
-      await axios.post("http://localhost:8080/api/deleteorder", { OrderId })
-      setorder(order.filter((order) => order.OrderId !== OrderId))
-      alert("order deleted")
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  //     setorder(response.data.data)
+  //   }
+  //   fetchorders();
+  // }, [])
 
   return (
     <div className='container-fluid'>

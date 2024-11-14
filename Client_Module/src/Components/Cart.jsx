@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { increaseqty, decreaseqty, removeItem, calculatetotal, clearCart } from '../Reduxwork/Cartslice'
 import axios from 'axios'
+import { createOrder } from '../apicalls/ordersApi'
 
 
 const Cart = () => {
@@ -27,7 +28,7 @@ const Cart = () => {
     }
 
     try {
-      let result = await axios.post("http://localhost:8080/api/addorder", orderReqData)
+      let result = await createOrder(orderReqData) 
       // alert("Order Placerd")
       dispatch(clearCart())
     } catch (error) {

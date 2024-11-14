@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Button, Form, Image } from 'react-bootstrap'
 import axios from 'axios'
+import { updateStatus } from '../apicalls/orderApi'
 
 
 const OrderDetails = () => {
@@ -12,14 +13,14 @@ const OrderDetails = () => {
 
     let updateOrderStatus = async () => {
         try {
-            let staussReqData = {
+            let statusReqData = {
                 orderid: data._id,
                 OrderStatus: slectedStatus
 
             }
-            let result = await axios.post("http://localhost:8080/api/updateorderstatus", staussReqData)
+            let result = await updateStatus(statusReqData) 
             console.log(result);
-            alert("Stsus Updated")
+            alert("Status Updated")
         } catch (error) {
             console.log(error);
         }

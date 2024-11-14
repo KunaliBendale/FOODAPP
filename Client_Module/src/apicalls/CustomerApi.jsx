@@ -15,6 +15,16 @@ export const registerCustomer = async (custReqData) => {
     }
 }
 
-export const loginCustomer = (loginReqData) => {
 
+export const loginCustomer = async (loginReqData) => {
+    let aInstance = createInstance()
+
+    try {
+        let result = await aInstance.post("dologin",loginReqData )
+
+        return result.data
+    } catch (error) {
+        throw new Error(error.message)
+        
+    }
 }

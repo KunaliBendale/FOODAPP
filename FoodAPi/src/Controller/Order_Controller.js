@@ -86,4 +86,4 @@ const UpdateOrderStatus = async (req, res) => {
 }
 
 
-export { AddOrder, GetAllOrders, DeleteOrder, UpdateOrderStatus ,OrdersByStatus}
+export { AddOrder, GetAllOrders, DeleteOrder, OrderByIdAndStatus,UpdateOrderStatus ,OrdersByStatus}

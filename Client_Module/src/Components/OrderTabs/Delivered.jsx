@@ -2,27 +2,43 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import { deletedOrder, fetchOrdersByStatus } from '../../apicalls/ordersApi.jsx'
 
 const Delivered = () => {
-    const { userdata } = useSelector((state) => state.user)
-    const [order, setorders] = useState([])
-    const navigate = useNavigate()
+  const { userdata } = useSelector((state) => state.user)
+  const [order, setorder] = useState([])
+  const navigate = useNavigate()
 
 
-    useEffect(() => {
-        const deliveredOrders = async () => {
-            const orderdata = await axios.post("http://localhost:8080/api/getordersbycustidstatus", {
-                OrderStatus: "Delivered",
-                CustomerId: "userdata._id"
-            })
-
-            setorders(orderdata.data.data)
+  useEffect(() => {
+    const deliveredOrders = async () => {
+      const orderdata = await fetchOrdersByStatus(
+        {
+          OrderStatus: "Delivered",
+          CustomerId: "userdata._id"
         }
-        deliveredOrders();
-    }, [])
+      )
+
+      setorder(orderdata.data)
+    }
+    deliveredOrders();
+  }, [])
+
+
+  let deleteOrder = async (OrderId) => {
+    try {
+      const result = await deletedOrder(OrderId)
+      console.log(result);
+      setorder(order.filter((order) => order.OrderId !== OrderId))
+      alert("order deleted")
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <div>
-       {
+      {
         order.map((item) => {
           return (
             <div className='container border border-dark p-3 mb-5 ' style={{ height: "25vh" }}>

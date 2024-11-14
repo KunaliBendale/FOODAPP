@@ -5,6 +5,7 @@ import axios from "axios";
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { addItem } from '../Reduxwork/Cartslice';
+import { fetchDishes } from '../apicalls/dishApi.jsx';
 
 const All_Dishes = () => {
    const dispatch=useDispatch();
@@ -12,10 +13,10 @@ const All_Dishes = () => {
 
   useEffect(() => {
     const fetchdata = async () => {
-      const response = await axios.get("http://localhost:8080/api/getdishes")
-      console.log(response.data.data);
+      const response = await fetchDishes()
+      console.log(response);
       
-      setCards(response.data.data);
+      setCards(response.data);
     }
     fetchdata();
   }, [])

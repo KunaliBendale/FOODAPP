@@ -4,6 +4,7 @@ import axios from "axios";
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
+import { deleteOneDish, fetchDishData, updatePrice } from '../apicalls/dishApi';
 
 const All_Dishes = () => {
     const [cards, setCards] = useState([]);
@@ -26,8 +27,8 @@ const All_Dishes = () => {
 
     useEffect(() => {
         const fetchdata = async () => {
-            const response = await axios.get("http://localhost:8080/api/getdishes")
-            setCards(response.data.data);
+            const response = await fetchDishData();
+            setCards(response.data);
         }
 
         fetchdata();
@@ -41,17 +42,17 @@ const All_Dishes = () => {
                 Price: newprice
             }
 
-            let result = await axios.post("http://localhost:8080/api/updatedishprice", priceReqData)
+            let result = await updatePrice(priceReqData)
             console.log(result);
-           
+
         } catch (error) {
             console.log(error);
         }
     }
 
-    let deleteDish= async (DishId)=>{
+    let deleteDish = async (DishId) => {
         try {
-            let result = await axios.post("http://localhost:8080/api/deletedish",{ DishId} )
+            let result = await deleteOneDish(DishId)
             console.log(result);
         } catch (error) {
             console.log(error);
@@ -77,8 +78,8 @@ const All_Dishes = () => {
 
 
                                 <div className='card-footer'>
-                                    <button className='btn btn-outline-warning ' onClick={()=>{deleteDish(dish._id)}}> Delete Dish </button>
-                                    <button className='btn btn-outline-primary ' onClick={()=>{handleShow(dish)}}> Update Price </button>
+                                    <button className='btn btn-outline-warning ' onClick={() => { deleteDish(dish._id) }}> Delete Dish </button>
+                                    <button className='btn btn-outline-primary ' onClick={() => { handleShow(dish) }}> Update Price </button>
 
                                 </div>
                             </div>
@@ -94,7 +95,7 @@ const All_Dishes = () => {
                 </Modal.Header>
                 <Modal.Body>
 
-                {selecteddish && (
+                    {selecteddish && (
                         <div>
                             <Form.Group className="mb-3">
                                 <Form.Label>Current Price:</Form.Label>
@@ -106,7 +107,7 @@ const All_Dishes = () => {
                                 <Form.Control
                                     type="number"
                                     value={newprice}
-                                    onChange={(e) => setnewprice(e.target.value)}  
+                                    onChange={(e) => setnewprice(e.target.value)}
                                 />
                             </Form.Group>
                         </div>

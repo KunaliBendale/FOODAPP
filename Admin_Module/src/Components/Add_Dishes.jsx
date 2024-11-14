@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Form } from 'react-bootstrap'
 import axios from 'axios'
+import { addDishData } from '../apicalls/dishApi'
 
 const AddDishes = () => {
 
@@ -18,12 +19,7 @@ const AddDishes = () => {
     // reqDishData.image = dishImage;
     console.log("DATA", reqDishData);
     try {
-      const res = await axios.post("http://localhost:8080/api/adddish",
-        reqDishData, {
-        headers: {
-          'Content-Type': "multipart/form-data"
-        }
-      })
+      const res = await addDishData(reqDishData) 
       console.log("RES", res);
     } catch (error) {
       console.log(error);

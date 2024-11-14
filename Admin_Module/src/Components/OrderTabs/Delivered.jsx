@@ -1,13 +1,16 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { fetchOrdersByStatus } from '../../apicalls/orderApi'
 
 const Delivered = () => {
     const [orders,setorders]=useState([])
     const navigate=useNavigate()
     useEffect(() => {
         const deliveredOrders = async () => {
-            const orderdata = await axios.post("http://localhost:8080/api/orderbystatus",{OrderStatus:"Approved"})
+            const orderdata = await fetchOrdersByStatus( {OrderStatus:"Approved"})
+             
+              
             setorders(orderdata.data.data)
         }
         deliveredOrders();

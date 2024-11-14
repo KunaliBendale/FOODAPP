@@ -3,6 +3,9 @@ import { useDispatch } from "react-redux"
 import { isLogin } from "../Reduxwork/UserSlice"
 import { useState } from "react"
 import axios from "axios"
+import { loginCustomer } from "../apicalls/CustomerApi"
+
+
 const Login_Page = () => {
 
   const nav = useNavigate()
@@ -17,10 +20,9 @@ const Login_Page = () => {
     const reqcustomerdata = Object.fromEntries(Customerdata.entries())
 
     try {
-      const result = await axios.post("http://localhost:8080/api/dologin", reqcustomerdata)
-      console.log("res", result)
+      let response = await loginCustomer(reqcustomerdata)
 
-      dispatch(isLogin(result.data.data))
+      dispatch(isLogin(response.data))
       nav('/');
 
     } catch (error) {
@@ -29,6 +31,7 @@ const Login_Page = () => {
     }
   }
 
+  
   return (
 
     <div className="container-fluid d-flex justify-content-center align-items-center vh-100 mt-5 ">

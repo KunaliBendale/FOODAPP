@@ -25,9 +25,9 @@ const Signuppage = () => {
         console.log(reqcustomerdata);
 
         try {
-            let respomce = await registerCustomer(reqcustomerdata)
+            let response = await registerCustomer(reqcustomerdata)
             console.log(respomce);
-            dispatch(isRegister(respomce.data));
+            dispatch(isRegister(response.data));
             nav(`/login`);
         } catch (error) {
             console.log(error);

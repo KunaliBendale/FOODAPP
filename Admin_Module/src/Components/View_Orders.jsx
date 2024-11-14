@@ -14,15 +14,15 @@ const View_Orders = () => {
   const navigate = useNavigate()
   const [ordercards, setordercards] = useState([])
 
-  useEffect(() => {
+  // useEffect(() => {
 
-    const fetchorders = async () => {
-      const customerorders = await axios.get("http://localhost:8080/api/getorders")
-      console.log(customerorders.data.data);
-      setordercards(customerorders.data.data)
-    }
-    fetchorders();
-  }, [])
+  //   const fetchorders = async () => {
+  //     const customerorders = await axios.get("http://localhost:8080/api/getorders")
+  //     console.log(customerorders.data.data);
+  //     setordercards(customerorders.data.data)
+  //   }
+  //   fetchorders();
+  // }, [])
 
   return (
     <div className='container-fluid'>

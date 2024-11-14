@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { fetchCancelledOrders } from '../../apicalls/orderApi'
 
 const Cancelled = () => {
   const [orders,setorders]=useState([])
     const navigate=useNavigate()
     useEffect(() => {
         const cancelledOrders = async () => {
-            const orderdata = await axios.post("http://localhost:8080/api/orderbystatus",{OrderStatus:"Cancelled"})
-            setorders(orderdata.data.data)
+            const orderdata = await fetchCancelledOrders({OrderStatus:"Cancelled"})
+            setorders(orderdata.data)
         }
         cancelledOrders();
     },[])      

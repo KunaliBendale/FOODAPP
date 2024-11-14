@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { fetchOrdersByStatus } from '../../apicalls/orderApi'
 
 
 const InTransit = () => {
   const [orders,setorders]=useState([])
     const navigate=useNavigate()
     useEffect(() => {
-        const InTransitOrders = async () => {
-            const orderdata = await axios.post("http://localhost:8080/api/orderbystatus",{OrderStatus:"InTransit"})
+        const InTransmitOrders = async () => {
+            const orderdata = await fetchOrdersByStatus({OrderStatus:"InTransmit"})
             setorders(orderdata.data.data)
         }
-        InTransitOrders();
+        InTransmitOrders();
     },[])  
 
   return (

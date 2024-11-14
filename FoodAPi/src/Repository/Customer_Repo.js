@@ -19,6 +19,7 @@ const CreateCustomer = async (params) => {
     }
 }
 
+
 const GetCustomer = async () => {
     try {
         const customer = await Customer.find()
