@@ -56,7 +56,4 @@ const GetOrdersByCustIdStatus = async ({ CustomerId ,OrderStatus}) => {
 }
 
 
-
-
-
 export { CreateOrder, GetOrders, DelOrder, GetOrdersByCustIdStatus, getOrdersByOrderStatus }

@@ -22,7 +22,7 @@ const Login_Page = () => {
     try {
       let response = await loginCustomer(reqcustomerdata)
 
-      dispatch(isLogin(response.data))
+      dispatch(isLogin(response.data.custData))
       nav('/');
 
     } catch (error) {
@@ -31,7 +31,6 @@ const Login_Page = () => {
     }
   }
 
-  
   return (
 
     <div className="container-fluid d-flex justify-content-center align-items-center vh-100 mt-5 ">

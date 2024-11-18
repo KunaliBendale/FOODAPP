@@ -4,6 +4,8 @@ import { useDispatch } from 'react-redux'
 import { isRegister } from '../Reduxwork/UserSlice'
 import axios from 'axios'
 import { registerCustomer } from '../apicalls/CustomerApi'
+
+
 const Signuppage = () => {
     const nav = useNavigate()
     const dispatch = useDispatch()
@@ -22,11 +24,10 @@ const Signuppage = () => {
     const submitForm = async (event) => {
         const Customerdata = new FormData(event.target);
         const reqcustomerdata = Object.fromEntries(Customerdata.entries())
-        console.log(reqcustomerdata);
 
         try {
             let response = await registerCustomer(reqcustomerdata)
-            console.log(respomce);
+            console.log(response);
             dispatch(isRegister(response.data));
             nav(`/login`);
         } catch (error) {

@@ -44,7 +44,7 @@ const DeleteCustomer = async (req, res) => {
     }
 }
 
-const UpdateCustomerMobile = async (req,res) => {
+const UpdateCustomerMobile = async (req, res) => {
     try {
         const UpdatedMb = await Customer.findOneAndUpdate({
             _id: req.body.CustomerId,
@@ -63,7 +63,7 @@ const UpdateCustomerMobile = async (req,res) => {
     }
 }
 
-const updateCustAddress = async(req,res)=>{
+const updateCustAddress = async (req, res) => {
     try {
         const UpdatedAd = await Customer.findOneAndUpdate({
             _id: req.body.CustomerId,
@@ -99,6 +99,8 @@ const UpdateCustomerprofile = async (req, res) => {
 const customerLogin = async (req, res) => {
     try {
         let result = await doLogin(req.body)
+        if (!result.success) return res.status(400).json(result)
+
         res.status(200).json(result)
     } catch (error) {
         res.status(500).json(error)
@@ -114,4 +116,4 @@ const UpdatePassword = async (req, res) => {
 
     }
 }
-export { AddCustomer, customerLogin, GetAllCustomer, DeleteCustomer,updateCustAddress, UpdateCustomerprofile,UpdateCustomerMobile }
+export { AddCustomer, customerLogin, GetAllCustomer, DeleteCustomer, updateCustAddress, UpdateCustomerprofile, UpdateCustomerMobile }

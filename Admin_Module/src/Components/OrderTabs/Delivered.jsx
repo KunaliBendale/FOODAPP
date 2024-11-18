@@ -14,7 +14,8 @@ const Delivered = () => {
             setorders(orderdata.data.data)
         }
         deliveredOrders();
-    },[])       
+    },[])  
+         
     return (
         <div>
             {

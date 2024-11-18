@@ -14,6 +14,7 @@ export const deletedOrder = async (OrderId) => {
 export const createOrder = async (orderReqData)=>{
     try {
         let result = await aInstance.post("addorder",orderReqData)
+        return result.data
     } catch (error) {
         throw new Error(error.message)
     }
