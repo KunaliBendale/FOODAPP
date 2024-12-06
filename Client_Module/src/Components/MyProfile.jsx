@@ -38,6 +38,7 @@ const MyProfile = () => {
             <p> City : <span>{userdata.City}</span></p>
             <p> State : <span>{userdata.State}</span></p>
             <p> Pincode : <span>{userdata.Pincode}</span></p>
+            
           </div>
 
           <div className='d-flex justify-content-evenly'>

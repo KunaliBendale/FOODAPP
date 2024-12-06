@@ -63,7 +63,7 @@ const doLogin = async ({ Email, Password }) => {
         if (!isCorrectPassword) return { message: "Incorrect Password", data: null, success: false }
 
         let token = jwt.sign({ cid: custData._id }, "Secret Key",
-            { expiresIn: 60 })
+            { expiresIn: '1h' })
 
             return { message: "Login Successfull.", data: { custData, token }, success: true }
 

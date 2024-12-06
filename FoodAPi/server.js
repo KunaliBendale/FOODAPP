@@ -6,6 +6,7 @@ import { DishRoutes } from "./src/Routes/Dishes.routes.js";
 import { OrderRoutes } from "./src/Routes/Order.routes.js";
 import multer from "multer";
 import cors from 'cors'
+import { reviewRouter } from "./src/Routes/Reviews.routes.js";
 
 const app=express();
 ConnectDB();
@@ -25,7 +26,7 @@ app.use("/uploads",express.static("uploads"));
  app.use("/api",CustomerRoutes);
  app.use("/api",DishRoutes);
  app.use("/api",OrderRoutes);
-
+app.use("/api",reviewRouter);
 app.listen(8080,()=>{
     console.log("Server started at 8080");
 })

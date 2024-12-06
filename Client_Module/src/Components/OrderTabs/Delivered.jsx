@@ -15,7 +15,7 @@ const Delivered = () => {
       const orderdata = await fetchOrdersByStatus(
         {
           OrderStatus: "Delivered",
-          CustomerId: "userdata._id"
+          CustomerId: userdata._id
         }
       )
 

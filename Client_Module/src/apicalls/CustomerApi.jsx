@@ -15,7 +15,6 @@ export const registerCustomer = async (custReqData) => {
     }
 }
 
-
 export const loginCustomer = async (loginReqData) => {
     let aInstance = createInstance()
 

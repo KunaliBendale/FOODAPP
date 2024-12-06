@@ -5,11 +5,9 @@ import { useState } from "react"
 import axios from "axios"
 import { loginCustomer } from "../apicalls/CustomerApi"
 
-
 const Login_Page = () => {
 
   const nav = useNavigate()
-
   const dispatch = useDispatch()
   const [Email, Setemail] = useState("")
   const [Password, Setpassword] = useState("")
@@ -22,7 +20,14 @@ const Login_Page = () => {
     try {
       let response = await loginCustomer(reqcustomerdata)
 
-      dispatch(isLogin(response.data.custData))
+      console.log(response);
+
+      let customerToken={
+        ...response.data.custData,
+        token:response.data.token
+      }
+      console.log(customerToken);
+      dispatch(isLogin(customerToken))
       nav('/');
 
     } catch (error) {

@@ -19,7 +19,6 @@ const UserSlice = createSlice({
 
         },
 
-
         isRegister: (state, action) => {
             state.userdata = action.payload
             state.register = true

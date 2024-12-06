@@ -10,13 +10,12 @@ const Cancelled = () => {
   const [order, setorder] = useState([])
   const navigate = useNavigate()
 
-
   useEffect(() => {
     const cancelledOrders = async () => {
       const orderdata = await fetchOrdersByStatus(
         {
           OrderStatus: "Cancelled",
-          CustomerId: "userdata._id"
+          CustomerId: userdata._id
         }
       )
 

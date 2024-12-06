@@ -11,6 +11,7 @@ const CreateDish = async (params) => {
         params.ImageId=cloudinaryres.public_id;
 
         const AddedDish = await Dish.create(params);
+        fs.unlink(Image);
         return AddedDish;
     } catch (error) {
         console.log(error);

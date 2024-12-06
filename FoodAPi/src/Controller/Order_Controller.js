@@ -13,7 +13,6 @@ const AddOrder = async (req, res) => {
     }
 }
 
-
 const GetAllOrders = async (req, res) => {
     try {
         const AllOrders = await GetOrders();
@@ -25,7 +24,6 @@ const GetAllOrders = async (req, res) => {
         res.status(500).json(error)
     }
 }
-
 
 const OrdersByStatus=async(req,res)=>{
     try {
@@ -40,7 +38,6 @@ const OrdersByStatus=async(req,res)=>{
     }
 }
 
-
 const DeleteOrder = async (req, res) => {
     try {
         const DeletedOrder = await DelOrder(req.body.OrderId);
@@ -52,6 +49,7 @@ const DeleteOrder = async (req, res) => {
         res.status(500).json(error)
     }
 }
+
 
 const OrderByIdAndStatus = async (req, res) => {
     try {

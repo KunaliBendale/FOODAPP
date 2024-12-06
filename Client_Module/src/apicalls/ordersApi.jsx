@@ -11,18 +11,27 @@ export const deletedOrder = async (OrderId) => {
     }
 }
 
-export const createOrder = async (orderReqData)=>{
+export const createOrder = async (orderReqData,token)=>{
     try {
-        let result = await aInstance.post("addorder",orderReqData)
+        let result = await aInstance.post("addorder",orderReqData,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
         return result.data
     } catch (error) {
         throw new Error(error.message)
     }
 }
 
-export const fetchOrdersByStatus = async (statusAndCustId) => {
+
+export const fetchOrdersByStatus = async (statusAndCustId,token) => {
     try {
-        let result = await aInstance.post("orderbystatus",statusAndCustId)
+        let result = await aInstance.post("getordersbycustidstatus",statusAndCustId,{
+            headers:{
+                Authorization:`Bearer ${token}`
+            }
+        })
         return result.data
     } catch (error) {
         throw new Error(error.message)

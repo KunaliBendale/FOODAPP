@@ -4,11 +4,13 @@ import { useDispatch } from 'react-redux'
 import { increaseqty, decreaseqty, removeItem, calculatetotal, clearCart } from '../Reduxwork/Cartslice'
 import axios from 'axios'
 import { createOrder } from '../apicalls/ordersApi'
+import { useNavigate } from 'react-router-dom'
 
 
 const Cart = () => {
   const { cart, carttotal } = useSelector((state) => state.cart)
   const { userdata } = useSelector((state) => state.user)
+  const navigate=useNavigate()
 
   const dispatch = useDispatch()
   dispatch(calculatetotal())
@@ -28,13 +30,16 @@ const Cart = () => {
     }
 
     try {
-      let result = await createOrder(orderReqData) 
+      let result = await createOrder(orderReqData , userdata.token) 
       // alert("Order Placerd")
       dispatch(clearCart())
     } catch (error) {
-      alert("Cant Place Order")
+      console.log(error);
+      alert(error.message)
+      navigate(`/login`)
     }
   }
+  
 
   return (
     <div className='d-flex'>

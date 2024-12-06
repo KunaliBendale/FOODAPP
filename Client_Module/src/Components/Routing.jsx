@@ -7,9 +7,10 @@ import Cart from './Cart';
 import MyProfile from './MyProfile';
 import Login_Page from './Login_Page';
 import Mynavbar from './Mynavbar';
-import Signuppage from './signuppage';
+import Signuppage from './Signuppage';
 import ProtectedRoute from './ProtectedRoute';
 import OrderDetails from './OrderDetails'
+import DishDetails from './DishDetails';
 
 const Routing = () => {
   return (
@@ -37,6 +38,8 @@ const Routing = () => {
           <Route path='/login' element={<Login_Page />} />
           <Route path='/signup' element={<Signuppage />} />
           <Route path='/orderdetails' element={<OrderDetails/>}/>
+          <Route path='/dishdetails' element={<DishDetails/>}/>
+
         </Routes>
       </BrowserRouter>
     </div>

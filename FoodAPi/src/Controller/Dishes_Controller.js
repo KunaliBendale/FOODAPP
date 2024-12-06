@@ -1,4 +1,5 @@
 import { Dish } from "../Models/Dishes.js";
+import { Reviews } from "../Models/Reviews.js";
 import { CreateDish, GetDishes, DelDish } from "../Repository/Dishes_Repo.js";
 
 const AddDishes = async (req, res) => {
@@ -52,5 +53,59 @@ const updateDishPrice = async (req, res) => {
     }
 }
 
+const getDishesWithAvgRating=async (req,res)=>{
+    try {
+       
+        const AverageRating = await Reviews.aggregate([
+            {
+                $group: {
+                    _id: "$DishId",
+                    averageratings: { $avg: "$Rating" }
+                }
+            }
+        ]);
+        
+        //const populatedReviews= await Dish.populate(AverageRating,{path:'_id'})
 
-export { AddDishes, GetAllDishes, DeleteDish, updateDishPrice }
+        const populatedDishes = await Dish.aggregate([
+            {
+                $lookup: {
+                    from: 'reviews', // Join with the Reviews collection
+                    localField: '_id', // Match DishId (from Dishes collection)
+                    foreignField: 'DishId', // Match DishId (from Reviews collection)
+                    as: 'reviews' // The alias for the populated data
+                }
+            },
+            {
+                $addFields: {
+                    averageratings: {
+                        $cond: {
+                            if: { $gt: [{ $size: "$reviews" }, 0] }, // If there are reviews
+                            then: { $avg: "$reviews.Rating" }, // Calculate average rating
+                            else: 0 // Else set average rating to 0
+                        }
+                    }
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    DishName: 1, // Include other fields from the Dishes collection (e.g., name)
+                    Price:1,
+                    DishType:1,
+                    Category:1,
+                    Image:1,
+                    ImageId:1,
+                    IsAvailable:1,
+                    averageratings: 1
+                }
+            }
+        ]);
+
+        res.status(200).json({ data: populatedDishes })
+    } catch (error) {
+        res.status(200).json(error)
+    }
+}
+
+export { AddDishes, GetAllDishes, DeleteDish, updateDishPrice ,getDishesWithAvgRating}
