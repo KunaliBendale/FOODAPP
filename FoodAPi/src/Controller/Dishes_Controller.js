@@ -64,7 +64,6 @@ const getDishesWithAvgRating=async (req,res)=>{
                 }
             }
         ]);
-        
         //const populatedReviews= await Dish.populate(AverageRating,{path:'_id'})
 
         const populatedDishes = await Dish.aggregate([

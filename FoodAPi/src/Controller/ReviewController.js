@@ -125,4 +125,4 @@ const getAverageRating = async (req, res) => {
 }
 
 
-export { AddReview, GetAllReviews, DeleteReview, UpdateReview, GetReviewsByDishId, GetAverageRatingByDishId ,getAverageRating }
+export { AddReview, GetAllReviews, DeleteReview, UpdateReview, GetReviewsByDishId ,getAverageRating }

@@ -28,6 +28,7 @@ const UserSlice = createSlice({
             state.logout=true
             alert("logged out") 
         }
+        
     }
 
 })
