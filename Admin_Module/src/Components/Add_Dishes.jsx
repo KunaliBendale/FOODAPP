@@ -19,7 +19,7 @@ const AddDishes = () => {
     // reqDishData.image = dishImage;
     console.log("DATA", reqDishData);
     try {
-      const res = await addDishData(reqDishData) 
+      const res = await addDishData(reqDishData)
       console.log("RES", res);
     } catch (error) {
       console.log(error);
@@ -28,68 +28,71 @@ const AddDishes = () => {
   }
 
   return (
-    <div >
-      <h1>Add Dishes</h1>
-      <div>
-      <Form onSubmit={(e) => {
-        e.preventDefault()
-        submitForm(e)
-      }}>
-        <Form.Group className='w-25 mt-3'>
-          <Form.Label>Add Dish Name : </Form.Label>
-          <Form.Control type="text" name="DishName" placeholder="add new dish"
-            onChange={
-              (e) => setDishName(e.target.value)
-            }
-          />
-        </Form.Group>
+    <div style={{ height: "90vh" }}>
+      <h1 style={{ textAlign: "center" }}>Add Dishes</h1>
+      <div className=' w-100 d-flex flex-column justify-content-center align-items-center' >
+        <Form onSubmit={(e) => {
+          e.preventDefault()
+          submitForm(e)
+        }} className='border w-50 ps-5 ms-5 shadow ' style={{ borderRadius: "20px" }}>
+          <Form.Group className='w-75 mt-4 ms-5'>
+            <Form.Label> Dish Name : </Form.Label>
+            <Form.Control type="text" name="DishName" placeholder="add new dish"
+              onChange={
+                (e) => setDishName(e.target.value)
+              }
+            />
+          </Form.Group>
 
-        <Form.Group className='w-25  mt-3'>
-          <Form.Label>Add Dish Price : </Form.Label>
-          <Form.Control type="number" name="Price" placeholder="add dish price"
-            onChange={
-              (e) => setPrice(e.target.value)
-            }
-          />
-        </Form.Group>
+          <Form.Group className='w-75  mt-3 ms-5'>
+            <Form.Label> Dish Price : </Form.Label>
+            <Form.Control type="number" name="Price" placeholder="add dish price"
+              onChange={
+                (e) => setPrice(e.target.value)
+              }
+            />
+          </Form.Group>
 
-        <Form.Group className='w-25  mt-3'>
-          <Form.Label>Add Dish Type : </Form.Label>
-          <Form.Check type="radio" value="veg" name='DishType' label='veg'
-            onChange={
-              (e) => setselecteddishtype(e.target.value)
-            }
-          />
-          <Form.Check type="radio" value="non-veg" name='DishType' label='non-veg'
-            onChange={
-              (e) => setselecteddishtype(e.target.value)
-            } />
-        </Form.Group>
+          <Form.Group className='w-75  mt-3 ms-5 d-flex'>
+            <Form.Label > Dish Type : </Form.Label>
+            <div className='d-flex justify-content-around  w-75 '>
+              <Form.Check  type="radio" value="veg" name='DishType' label='veg'
+                onChange={
+                  (e) => setselecteddishtype(e.target.value)
+                }
+              />
+              <Form.Check type="radio" value="non-veg" name='DishType' label='non-veg'
+                onChange={
+                  (e) => setselecteddishtype(e.target.value)
+                } />
+            </div>
+          </Form.Group>
 
-        <Form.Group className=' mt-3'>
-          <Form.Label>Add Dish Category : </Form.Label>
-          <Form.Select className='w-25' name="Category"
-            onChange={
-              (e) => setCategory(e.target.value)
-            }
-          >
+          <Form.Group className='w-100 mt-3 ms-5'>
+            <Form.Label> Dish Category : </Form.Label>
+            <Form.Select className='w-75' name="Category"
+              onChange={
+                (e) => setCategory(e.target.value)
+              }
+            >
+              <option value="Chinese">Chinese</option>
+              <option value="Maharastrian">Maharastrian</option>
+              <option value="South Indian">South Indian</option>
+              <option value="Punjabi">Punjabi</option>
+            </Form.Select>
 
-            <option value="Chinese">Chinese</option>
-            <option value="Maharastrian">Maharastrian</option>
-            <option value="South Indian">South Indian</option>
-            <option value="Punjabi">Punjabi</option>
-          </Form.Select>
+          </Form.Group>
+          <Form.Group className='w-75 ms-5 mt-3'>
+            <Form.Label>Upload Dish Image : </Form.Label>
+            <Form.Control onChange={(e) => setdishImage(e.target.files[0])} type="file" name="image" />
+          </Form.Group>
 
-        </Form.Group>
-        <Form.Group className='w-25  mt-3'>
-          <Form.Label>Upload Dish Image : </Form.Label>
-          <Form.Control onChange={(e) => setdishImage(e.target.files[0])} type="file" name="image" />
-        </Form.Group>
-
-        <Button type="submit">
-          Add Dish
-        </Button>
-      </Form>
+          <div className='d-flex justify-content-center pe-3'>
+            <Button type="submit" className='mt-3 mb-3 w-25'>
+              Add Dish
+            </Button>
+          </div>
+        </Form>
       </div>
     </div>
   )

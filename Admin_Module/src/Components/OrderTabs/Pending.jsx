@@ -9,10 +9,11 @@ const Pending = () => {
     useEffect(() => {
         const pendingOrders = async () => {
             const orderdata = await fetchOrdersByStatus({OrderStatus:"Pending"}) 
-            setorders(orderdata.data.data)
+            setorders(orderdata.data)
         }
         pendingOrders();
     },[])  
+    
   return (
     <div>
          <div>

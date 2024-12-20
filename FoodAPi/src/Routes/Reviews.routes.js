@@ -9,6 +9,6 @@ reviewRouter.post("/delreview",DeleteReview);
 reviewRouter.post("/updatereview",UpdateReview);
 reviewRouter.post("/getreviewbydishid",GetReviewsByDishId);
 // reviewRouter.post("/getaverageRatingByDishId",GetAverageRatingByDishId);
-reviewRouter.post("/getaverageRating",getAverageRating);
+reviewRouter.get("/getaverageRating",getAverageRating);
 
 export {reviewRouter}

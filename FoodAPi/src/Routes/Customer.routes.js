@@ -15,4 +15,6 @@ CustomerRoutes.post("/updatecustmobile",UpdateCustomerMobile);
 CustomerRoutes.post("/updatecustaddress",updateCustAddress);
 
 //attach authenticate to update mobile and address
+
+
 export {CustomerRoutes}

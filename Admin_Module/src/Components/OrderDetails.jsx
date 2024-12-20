@@ -18,7 +18,7 @@ const OrderDetails = () => {
                 OrderStatus: slectedStatus
 
             }
-            let result = await updateStatus(statusReqData) 
+            let result = await updateStatus(statusReqData)
             console.log(result);
             alert("Status Updated")
         } catch (error) {
@@ -32,25 +32,30 @@ const OrderDetails = () => {
             <div className='border ps-4' style={{ borderTopLeftRadius: "20px", borderBottomRightRadius: "20px" }}>
                 <div className='p-3'>
                     <div> Order Id : {data._id}</div>
-                    <div> Order Date : {data.OrderDate}</div>
+                    <div> Order Date : {data.formattedOrderDate}</div>
                     <div className='btn btn-secondary rounded-pill mt-2'> {data.OrderStatus}</div>
 
                 </div>
-                <div className='d-flex justify-content-around mt-3 pt-2 border-top border-bottom'>
-                    <div>
+                <div className='d-flex flex-row mt-3 pt-2 border-top border-bottom'>
+                    <div className='d-flex  justify-content-center'>
+                        <div>
                         <h3>Customer Info</h3>
-                        <p>Name : <>{data.CustomerId.Name}</></p>
-                        <p>Email : <>{data.CustomerId.Email}</></p>
-                        <p>Mobile : <>{data.CustomerId.Mobile}</></p>
-                        <p > Address : {data.CustomerId.Address},{data.CustomerId.City},{data.CustomerId.State}</p>
+                            <p > Name : {data.CustomerDetails.Name}</p>
+                            <p > Email : {data.CustomerDetails.Email}</p>
+                            <p > Mobile : {data.CustomerDetails.Mobile}</p>
+                            <p > Address : {data.CustomerDetails.Address} ({data.CustomerDetails.Pincode}) ,{data.CustomerDetails.City} ,
+                                 {data.CustomerDetails.State}</p>
 
-                    </div>
 
-                    <div>
-                        <h3>Order Info</h3>
-                        <p>Total Amount : <>{data.TotalAmount}</></p>
-                        <p>No. Of Items : <>{data.NoOfItems}</></p>
+                        </div>
 
+                        <div>
+                            <h3>Order Info</h3>
+
+                            <p>Total Amount : <>{data.TotalAmount}</></p>
+                            <p>No. Of Items : <>{data.NoOfItems}</></p>
+
+                        </div>
                     </div>
                 </div>
 
@@ -58,29 +63,41 @@ const OrderDetails = () => {
                     <h5>Dishes</h5>
                     <div className=' border d-flex justify-content-evenly '>
                         {
-                            data.items.map((item) => {
+                            data.DishDetails.map((item) => {
                                 return (
                                     <div className='d-flex ' style={{ width: "100%", height: "30vh" }}>
                                         <div className=' p-3 w-50'>
-                                            <Image src={item.dishid.Image} style={{ height: '30vh', width: "100%", objectFit: "contain" }} rounded />
+                                            <Image src={item.Image} style={{ height: '25vh', width: "100%", objectFit: "contain" }} rounded />
                                         </div>
 
                                         <div className='border-right ps-2 pt-2 w-50'>
                                             <h4> Dish Info. </h4>
-                                            <p style={{ fontSize: "15px" }}> Dish Name : {item.dishid.DishName}</p>
-                                            <p style={{ fontSize: "15px" }}> Dish Category : {item.dishid.Category}</p>
-                                            <p style={{ fontSize: "15px" }}> Dish type : {item.dishid.DishType}</p>
-                                            <p style={{ fontSize: "15px" }}> Quantity : {item.quantity}</p>
+                                            <p style={{ fontSize: "15px" }}> Dish Name : {item.DishName}</p>
+                                            <p style={{ fontSize: "15px" }}> Dish Category : {item.Category}</p>
+                                            <p style={{ fontSize: "15px" }}> Dish type : {item.DishType}</p>
 
                                         </div>
                                     </div>
                                 )
                             })
                         }
+
                     </div>
+                    {/* <div>
+                        {data.items.map((item) => {
+                            return (
+                                <div>
+                                    <p style={{ fontSize: "15px" }}> Quantity : {item.quantity}</p>
+
+                                </div>
+                            )
+                        })}
+                    </div> */}
                 </div>
             </div>
+
             <div>
+
                 <h3>Update Status</h3>
                 <Form.Check type='radio' label="Preparing"
                     value="Preparing"
@@ -107,11 +124,8 @@ const OrderDetails = () => {
 
                 <Button onClick={() => updateOrderStatus()}>Update Status</Button>
             </div>
+
         </div>
     )
 }
-
-
 export default OrderDetails
-
-

@@ -1,5 +1,6 @@
+import { format } from "path";
 import { Order } from "../Models/Order.js";
-import { CreateOrder, GetOrders, DelOrder, GetOrdersByCustIdStatus ,getOrdersByOrderStatus} from "../Repository/Order_Repo.js";
+import { CreateOrder, GetOrders, DelOrder, GetOrdersByCustIdStatus, getOrdersByOrderStatus } from "../Repository/Order_Repo.js";
 
 const AddOrder = async (req, res) => {
     try {
@@ -25,9 +26,9 @@ const GetAllOrders = async (req, res) => {
     }
 }
 
-const OrdersByStatus=async(req,res)=>{
+const OrdersByStatus = async (req, res) => {
     try {
-        const orders=await getOrdersByOrderStatus(req.body.OrderStatus);
+        const orders = await getOrdersByOrderStatus(req.body.OrderStatus);
         res.status(200).json({
             message: "Orders Are : ",
             data: orders
@@ -36,6 +37,70 @@ const OrdersByStatus=async(req,res)=>{
         res.status(500).json(error)
         console.log(error);
     }
+}
+
+const fetchSortedOrders = async (req, res) => {
+    try {
+        const { OrderStatus } = req.body;
+        console.log(OrderStatus);
+        const fetchedOrders = await Order.aggregate([
+
+            {
+                $match: {
+                    OrderStatus: OrderStatus, // Filter orders by the provided OrderStatus
+                },
+            },
+            {
+                $sort: {
+                    OrderDate: -1, // Sort by OrderDate in descending order (most recent first)
+                },
+            },
+            {
+                $lookup: {
+                    from: "dishes", // Name of the dishes collection
+                    localField: "items.dishid", // Field in Order that contains references to dishes
+                    foreignField: "_id", // Field in the dishes collection to match
+                    as: "DishDetails", // Name of the array where the matched dishes will be stored
+                },
+            },
+            {
+                $lookup: {
+                    from: "customers", // Name of the customers collection
+                    localField: "CustomerId", // Field in Order that references the customer
+                    foreignField: "_id", // Field in the customers collection to match
+                    as: "CustomerDetails", // Name of the array where the matched customer will be stored
+                },
+            },
+
+            {
+                $addFields: {
+                    formattedOrderDate: {
+                        $dateToString: {
+                            format: "%Y-%m-%d",
+                            date: "$OrderDate"
+                        }
+                    }
+                }
+            },
+            {
+                $project: {
+                    _id: 1,
+                    OrderStatus: 1,
+                    NoOfItems: 1,
+                    TotalAmount: 1,
+                    formattedOrderDate: 1,
+                    DishDetails: 1, // Include dish details
+                    CustomerDetails: { $arrayElemAt: ["$CustomerDetails", 0] }, // Get the first (and likely only) element
+                },
+            },
+
+        ]);
+
+        res.status(200).json({ data: fetchedOrders })
+    } catch (error) {
+        res.status(500).json({ error: error.message })
+    }
+
 }
 
 const DeleteOrder = async (req, res) => {
@@ -65,15 +130,15 @@ const OrderByIdAndStatus = async (req, res) => {
 
 const UpdateOrderStatus = async (req, res) => {
     try {
-        const result =  await Order.findOneAndUpdate(
+        const result = await Order.findOneAndUpdate(
             {
                 _id: req.body.orderid
             },
             {
                 OrderStatus: req.body.OrderStatus
-            },{
-                new:true
-            })
+            }, {
+            new: true
+        })
             .populate("items.dishid")
         res.status(200).json({
             data: result
@@ -83,5 +148,99 @@ const UpdateOrderStatus = async (req, res) => {
     }
 }
 
+const totalRevenue = async (req, res) => {
+    try {
+        const result = await Order.aggregate([
+            {
+                $match: {
+                    OrderStatus: "Delivered",
+                }
+            },
+            // {
+            //     $unwind: "$items" // Unwind the items array to process individual dishes
+            // },
+            {
+                $group: {
+                    _id: null, // No grouping key to calculate the total
+                    totalRevenue: { $sum: "$TotalAmount" } // Sum up the TotalAmount field
+                }
+            }
+        ])
+        console.log(result);
+        res.status(200).json({ data: result })
+    } catch (error) {
+        console.log(error.message);
+    }
+}
 
-export { AddOrder, GetAllOrders, DeleteOrder, OrderByIdAndStatus,UpdateOrderStatus ,OrdersByStatus}
+
+const getTopDishes = async (req, res) => {
+    try {
+        const topDishes = await Order.aggregate([
+            // Stage 1: Match only Delivered orders
+            {
+                $match: { OrderStatus: "Delivered" },
+            },
+            // Stage 2: Unwind the items array to break down each dish into a separate document
+            {
+                $unwind: "$items", // Break down array of dishes into individual records
+            },
+             // Stage 3: Lookup dish details for more information (like name and price)
+             {
+                $lookup: {
+                    from: "dishes", // 'dishes' collection
+                    localField: "items.dishid", // The dish ID in the items array
+                    foreignField: "_id", // The dish ID in the dishes collection
+                    as: "dishDetails"
+                }
+            },
+            // Stage 4: Unwind the dishDetails to flatten the array
+            {
+                $unwind: "$dishDetails" // Each document will have a single dishDetail object
+            },
+            // Stage 5: Group by dish ID to calculate total quantity and total revenue per dish
+            {
+                $group: {
+                    _id: "$items.dishid", // Group by dish ID
+                    totalQuantity: { $sum: "$items.quantity" }, // Sum up the quantities
+                    totalRevenue: { $sum: { $multiply: ["$items.quantity",{ $toDouble: "$dishDetails.Price" } ] } } // Calculate revenue per dish
+                }
+            },
+            // Stage 4: Sort by total quantity in descending order
+            {
+                $sort: {
+                    totalQuantity: -1
+                }
+            },
+            // Stage 5: Limit to the top 10 dishes
+            {
+                $limit: 5
+            },
+            // Stage 6 (Optional): Lookup dish details for more information (like name)
+            {
+                $lookup: {
+                    from: "dishes", // 'dishes' collection
+                    localField: "_id", // The dish ID from the items array
+                    foreignField: "_id", // The dish ID in the dishes collection
+                    as: "dishDetails"
+                }
+            },
+            // Stage 7 (Optional): Format the output
+            {
+                $project: {
+                    dishId: "$_id",
+                    totalQuantity: 1,
+                    totalRevenue: 1,
+                    dishDetails: { $arrayElemAt: ["$dishDetails", 0] } // Take the first matching dish detail
+                }
+            }
+        ]);
+
+        res.status(200).json({ data: topDishes });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+export { AddOrder, GetAllOrders, DeleteOrder, OrderByIdAndStatus, UpdateOrderStatus, OrdersByStatus, totalRevenue, fetchSortedOrders, getTopDishes }

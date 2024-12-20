@@ -7,20 +7,22 @@ import Reviews from './Reviews'
 import Myoffcanvas from './Myoffcanvas'
 import AddDishes from './Add_Dishes'
 import OrderDetails from './OrderDetails'
-
+import DishDetails from './DishDetails'
 
 const Routing = () => {
   return (
     <div>
+      
         <BrowserRouter>
         <Myoffcanvas/>
         <Routes>
             <Route path='/' element={<Dashboard/>}/>
-            <Route path='/add_dishes' element={<AddDishes/>}/>
-            <Route path='/all_dishes' element={<All_Dishes/>}/>
+            <Route path='/adddishes' element={<AddDishes/>}/>
+            <Route path='/alldishes' element={<All_Dishes/>}/>
             <Route path='/view_orders' element={<View_Orders/>}/>
             <Route path='/reviews' element={<Reviews/>}/>
             <Route path='/orderdetails' element={<OrderDetails/>}/>
+            <Route path='/dishdetails' element={<DishDetails/>}/>
         </Routes>
         </BrowserRouter>
     </div>

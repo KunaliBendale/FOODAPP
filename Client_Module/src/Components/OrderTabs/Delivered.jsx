@@ -3,12 +3,11 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 import { deletedOrder, fetchOrdersByStatus } from '../../apicalls/ordersApi.jsx'
-
+import { format } from "date-fns"
 const Delivered = () => {
   const { userdata } = useSelector((state) => state.user)
   const [order, setorder] = useState([])
   const navigate = useNavigate()
-
 
   useEffect(() => {
     const deliveredOrders = async () => {
@@ -16,14 +15,23 @@ const Delivered = () => {
         {
           OrderStatus: "Delivered",
           CustomerId: userdata._id
-        }
+        }, userdata.token
       )
+      console.log(userdata._id);
 
-      setorder(orderdata.data)
+      const orders = orderdata.data;
+
+      //sort orders as newest first
+      const sortedOrders = orders.sort((a,b)=>{
+        return new Date(b.OrderDate) - new Date(a.OrderDate);
+      })
+
+       console.log(sortedOrders);
+      setorder(sortedOrders);
+      
     }
     deliveredOrders();
   }, [])
-
 
   let deleteOrder = async (OrderId) => {
     try {
@@ -47,7 +55,13 @@ const Delivered = () => {
                   <div>
                     <p style={{ fontSize: "20px" }}> Status : {item.OrderStatus}</p>
 
-                    <p style={{ fontSize: "20px" }}> Date : {item.OrderDate} </p>
+
+                    <p style={{ fontSize: "20px" }}>  <p style={{ fontSize: '20px' }}>
+                      Date:{' '}
+                      {item.OrderDate
+                        ? format(new Date(item.OrderDate), 'yyyy-MM-dd')
+                        : 'N/A'}
+                    </p></p>
                   </div>
 
 

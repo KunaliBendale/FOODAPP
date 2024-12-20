@@ -64,6 +64,7 @@ const getDishesWithAvgRating=async (req,res)=>{
                 }
             }
         ]);
+        
         //const populatedReviews= await Dish.populate(AverageRating,{path:'_id'})
 
         const populatedDishes = await Dish.aggregate([
@@ -75,6 +76,7 @@ const getDishesWithAvgRating=async (req,res)=>{
                     as: 'reviews' // The alias for the populated data
                 }
             },
+
             {
                 $addFields: {
                     averageratings: {

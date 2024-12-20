@@ -26,10 +26,7 @@ const View_Orders = () => {
 
   return (
     <div className='container-fluid'>
-      {
-        ordercards.map((order) => {
-          return (
-            <div className='container border border-dark p-3 mb-5 ' style={{ height: "25vh" }}>
+            <div className='container border border-dark p-3 mb-5 ' >
 
               <div>
                 <Tabs
@@ -73,9 +70,8 @@ const View_Orders = () => {
                 </div>
               </div> */}
             </div>
-          )
-        })
-      }
+          
+   
     </div>
 
 

@@ -14,7 +14,7 @@ const InTransit = () => {
       const orderdata = await fetchOrdersByStatus({
         OrderStatus: "In Transmit",
         CustomerId: userdata._id
-      }) 
+      },userdata.token) 
 
       setorder(orderdata.data)
     }

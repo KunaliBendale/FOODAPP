@@ -15,7 +15,7 @@ export const fetchOrdersByStatus = async (orderStatus) => {
 export const updateStatus = async (statusReqData)=>{
     try {
         let result = aInstance.post("updateorderstatus",statusReqData)
-        return result;
+        return result.data;
     } catch (error) {
         throw new Error(error.message)
         

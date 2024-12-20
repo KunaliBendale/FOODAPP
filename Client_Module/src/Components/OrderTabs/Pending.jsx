@@ -10,14 +10,14 @@ const Pending = () => {
   const navigate = useNavigate()
 
   
-  console.log(userdata);
+ 
   useEffect(() => {
     const pendingOrders = async () => {
       const orderdata = await fetchOrdersByStatus({
         OrderStatus: "Pending",
         CustomerId: userdata._id
       },userdata.token)
-
+      console.log(orderdata.data);
       setorder(orderdata.data)
     }
     pendingOrders();

@@ -9,7 +9,7 @@ const InTransit = () => {
     useEffect(() => {
         const InTransmitOrders = async () => {
             const orderdata = await fetchOrdersByStatus({OrderStatus:"InTransmit"})
-            setorders(orderdata.data.data)
+            setorders(orderdata.data)
         }
         InTransmitOrders();
     },[])  

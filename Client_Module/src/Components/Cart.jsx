@@ -6,11 +6,10 @@ import axios from 'axios'
 import { createOrder } from '../apicalls/ordersApi'
 import { useNavigate } from 'react-router-dom'
 
-
 const Cart = () => {
   const { cart, carttotal } = useSelector((state) => state.cart)
   const { userdata } = useSelector((state) => state.user)
-  const navigate=useNavigate()
+  const navigate = useNavigate()
 
   const dispatch = useDispatch()
   dispatch(calculatetotal())
@@ -30,7 +29,7 @@ const Cart = () => {
     }
 
     try {
-      let result = await createOrder(orderReqData , userdata.token) 
+      let result = await createOrder(orderReqData, userdata.token)
       // alert("Order Placerd")
       dispatch(clearCart())
     } catch (error) {
@@ -39,7 +38,6 @@ const Cart = () => {
       navigate(`/login`)
     }
   }
-  
 
   return (
     <div className='d-flex'>

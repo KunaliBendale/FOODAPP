@@ -5,6 +5,8 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
 import { deleteOneDish, fetchDishData, updatePrice } from '../apicalls/dishApi';
+import { useNavigate } from 'react-router-dom';
+import { Col, Container, Row } from 'react-bootstrap';
 
 const All_Dishes = () => {
     const [cards, setCards] = useState([]);
@@ -12,6 +14,8 @@ const All_Dishes = () => {
 
     const [selecteddish, setselecteddish] = useState(null);
     const [newprice, setnewprice] = useState('');
+
+    const navigate = useNavigate();
 
     const handleClose = () => {
         setselecteddish(null);
@@ -29,6 +33,7 @@ const All_Dishes = () => {
         const fetchdata = async () => {
             const response = await fetchDishData();
             setCards(response.data);
+
         }
 
         fetchdata();
@@ -60,14 +65,16 @@ const All_Dishes = () => {
     }
 
     return (
-        <div>
+        <>
             <div className="d-flex flex-wrap mt-2 ">
                 {
                     cards.map((dish) => {
                         return (
                             <div className="card me-3 " style={{ width: '20%' }}>
                                 <div className="Image-div card-header " style={{ height: '55%', cursor: 'pointer' }} >
-                                    <img src={dish.Image} width={200}></img>
+                                    <img src={dish.Image} width={200} onClick={() =>
+                                        navigate('/dishdetails', { state: dish })
+                                    }></img>
                                 </div>
 
                                 <div className='card-body '>
@@ -87,6 +94,20 @@ const All_Dishes = () => {
                     })
                 }
             </div>
+
+            {/* <Container>
+               <>
+               {
+                    <Row>
+                        <Col>
+
+                        </Col>
+                    </Row>
+                }
+               </>
+
+            </Container> */}
+
 
 
             <Modal show={show} onHide={handleClose}>
@@ -123,7 +144,7 @@ const All_Dishes = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-        </div>
+        </>
     )
 }
 

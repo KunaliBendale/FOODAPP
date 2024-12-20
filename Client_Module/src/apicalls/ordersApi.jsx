@@ -32,8 +32,10 @@ export const fetchOrdersByStatus = async (statusAndCustId,token) => {
                 Authorization:`Bearer ${token}`
             }
         })
+        console.log(result.data);
         return result.data
     } catch (error) {
+        console.log(error.message);
         throw new Error(error.message)
     }
 }

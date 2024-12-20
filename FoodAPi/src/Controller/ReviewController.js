@@ -25,6 +25,8 @@ const AddReview = async (req, res) => {
 const GetAllReviews = async (req, res) => {
     try {
         const allReviews = await Reviews.find()
+        .populate("CustomerId")
+        .populate("DishId")
 
         res.status(200).json({
             data: allReviews
@@ -70,6 +72,8 @@ const UpdateReview = async (req, res) => {
 const GetReviewsByDishId = async (req, res) => {
     try {
         const reviews = await Reviews.find({ DishId: req.body.DishId })
+        .populate("DishId")
+        .populate("CustomerId")
         res.status(200).json(
             { data: reviews }
         )
@@ -77,7 +81,6 @@ const GetReviewsByDishId = async (req, res) => {
         res.status(500).json(error)
     }
 }
-
 
 // const GetAverageRatingByDishId = async (req, res) => {
 //     try {

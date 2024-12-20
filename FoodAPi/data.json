@@ -18,3 +18,43 @@
         }
     ]
 }
+
+
+{
+    "data": [
+        {
+            "_id": "672cb9d494f49adf402e43a9",
+            "totalQuantity": 10,
+            "totalRevenue": 0,
+            "dishId": "672cb9d494f49adf402e43a9",
+            "dishDetails": {
+                "_id": "672cb9d494f49adf402e43a9",
+                "DishName": "manchurian",
+                "Price": "150",
+                "DishType": "veg",
+                "Category": "Chinese",
+                "Image": "https://res.cloudinary.com/dqx4tobjq/image/upload/v1730984404/jcasta444pu1jgwuv2vx.webp",
+                "ImageId": "jcasta444pu1jgwuv2vx",
+                "IsAvailable": true,
+                "__v": 0
+            }
+        },
+        {
+            "_id": "6734b8f77ae220be5a568084",
+            "totalQuantity": 8,
+            "totalRevenue": 0,
+            "dishId": "6734b8f77ae220be5a568084",
+            "dishDetails": {
+                "_id": "6734b8f77ae220be5a568084",
+                "DishName": "paneer",
+                "Price": "100",
+                "DishType": "veg",
+                "Category": "Chinese",
+                "Image": "https://res.cloudinary.com/dqx4tobjq/image/upload/v1731508476/alv8lnv5qi6nqfgops54.jpg",
+                "ImageId": "alv8lnv5qi6nqfgops54",
+                "IsAvailable": true,
+                "__v": 0
+            }
+        }
+    ]
+}
