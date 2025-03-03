@@ -1,33 +1,66 @@
-import { Button } from 'bootstrap';
-import React from 'react'
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import { Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { Container, Nav, Navbar, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { isLogout } from "../Reduxwork/UserSlice";
+import "./Mynavbar.css"; // Ensure CSS is updated
 
 const Mynavbar = () => {
-  return (
-    <div>
+  const { userdata } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+  const isLoggedIn = userdata && Object.keys(userdata).length > 0;
 
-      <Navbar expand="lg" className="bg-body-tertiary">
-        <Container >
-          <Navbar.Brand href="#home">Food App </Navbar.Brand>
-          <Navbar.Toggle aria-controls="basic-navbar-nav" />
-          <Navbar.Collapse id="basic-navbar-nav">
-            <Nav className="gap-5">
-              <Nav.Link href="#home"> <Link to={'/'} style={{ listStyle: 'none', textDecoration: 'none' }}>Home</Link></Nav.Link>
-              <Nav.Link href="#all-dishes"> <Link to={'/all_dishes'} style={{ listStyle: 'none', textDecoration: 'none' }}>All Dishes</Link></Nav.Link>
-              <Nav.Link href="#my-orders"> <Link to={'/my_orders'} style={{ listStyle: 'none', textDecoration: 'none' }}>My Orders</Link></Nav.Link>
-              <Nav.Link href="#my-cart"> <Link to={'/cart'} style={{ listStyle: 'none', textDecoration: 'none' }}>Cart</Link></Nav.Link>
-              <Nav.Link href="#my profile"> <Link to={'/profile'} style={{ listStyle: 'none', textDecoration: 'none' }}>My Profile</Link></Nav.Link>
-              <div>
-                <button className="btn btn-outline-secondary me-4"><Link to={'/login'} style={{ listStyle: 'none', textDecoration: 'none' }}>Login/SignUp </Link></button>
-              </div>
-            </Nav>
-          </Navbar.Collapse>
-        </Container>
-      </Navbar>
-    </div>
+  const [expanded, setExpanded] = useState(false); // Track menu state
+
+  return (
+    <Navbar
+      expanded={expanded}
+      expand="lg"
+      className="custom-navbar"
+      sticky="top"
+    >
+      <Container>
+        <Navbar.Brand className="navbar-brand">🍽️Jayashree Delights</Navbar.Brand>
+
+        {/* Toggle Button for Mobile */}
+        <Navbar.Toggle
+          aria-controls="basic-navbar-nav"
+          onClick={() => setExpanded(expanded ? false : true)}
+        />
+
+        {/* Collapsible Menu */}
+        <Navbar.Collapse id="basic-navbar-nav" className="nav-collapse">
+          <Nav className="ms-auto nav-links">
+            <Nav.Link as={Link} to="/" className="nav-item" onClick={() => setExpanded(false)}>Home</Nav.Link>
+            <Nav.Link as={Link} to="/all_dishes" className="nav-item" onClick={() => setExpanded(false)}>All Dishes</Nav.Link>
+            <Nav.Link as={Link} to="/my_orders" className="nav-item" onClick={() => setExpanded(false)}>My Orders</Nav.Link>
+            <Nav.Link as={Link} to="/cart" className="nav-item" onClick={() => setExpanded(false)}>Cart</Nav.Link>
+            <Nav.Link as={Link} to="/profile" className="nav-item" onClick={() => setExpanded(false)}>My Profile</Nav.Link>
+          </Nav>
+
+          {/* Logout/Login Button */}
+          <div className="logout-container">
+            {isLoggedIn ? (
+              <Button
+                variant="outline-danger"
+                className="logout-btn"
+                onClick={() => {
+                  dispatch(isLogout());
+                  setExpanded(false);
+                }}
+              >
+                🚪 Logout
+              </Button>
+            ) : (
+              <Button variant="outline-light" className="login-btn">
+                <Link to="/login" className="login-link" onClick={() => setExpanded(false)}>Login/Sign Up</Link>
+              </Button>
+            )}
+          </div>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
-}
-export default Mynavbar
+};
+
+export default Mynavbar;

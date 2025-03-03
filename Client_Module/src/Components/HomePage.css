@@ -1,0 +1,101 @@
+/* 
+
+.carouselcaption{
+    color:black;
+    margin-right: 10%;
+    margin-bottom: 5%;
+    font-size: large;
+}
+
+
+
+.AboutUs{
+    height: 90vh;
+} */
+
+
+/* Overall Page */
+/* .homepage {
+    
+    background-color: #f8f9fa;
+  }
+  
+  
+  .hero-carousel {
+    height: 80vh;
+  }
+  
+  .hero-image {
+    height: 80vh;
+    object-fit: cover;
+  }
+  
+  .hero-caption {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 15px;
+    border-radius: 10px;
+    color: white;
+    font-size: 1.2rem;
+  }
+  
+ 
+  @media (max-width: 768px) {
+    .hero-caption {
+      font-size: 1rem;
+      padding: 10px;
+    }
+  }
+   */
+
+
+
+
+   /* Full-width sections */
+.full-width-section {
+    width: 100%;
+    padding: 50px 0;
+    background: #fff;
+  }
+  
+
+
+
+  /* HeroSection.css */
+
+  .hero-container {
+    position: relative;
+    width: 100%;
+    height: 80vh;
+    
+  }
+  
+  .parallax-bg {
+    width: 100%;
+    height: 80vh;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+  }
+  
+  .hero-caption {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 15px;
+    border-radius: 10px;
+    color: white;
+  }
+
+  
+  /* specialOffers.css */
+  .special-offers-banner {
+    background: #ff5733;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    font-size: 1.2rem;
+  }
+  
+  .special-offers-banner h2 {
+    margin: 0;
+    font-weight: bold;
+  }
+  

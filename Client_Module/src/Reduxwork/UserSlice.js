@@ -9,7 +9,7 @@ const initialState = {
 }
 
 const UserSlice = createSlice({
-    name: "userdata",
+    name: "user",
     initialState,
     reducers: {
 

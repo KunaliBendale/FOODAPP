@@ -1,72 +1,185 @@
-import { useNavigate } from "react-router-dom"
-import { useDispatch } from "react-redux"
-import { isLogin } from "../Reduxwork/UserSlice"
-import { useState } from "react"
-import axios from "axios"
-import { loginCustomer } from "../apicalls/CustomerApi"
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { isLogin } from "../Reduxwork/UserSlice";
+import { useState } from "react";
+import { loginCustomer } from "../apicalls/CustomerApi";
+import axios from "axios";
+import { Container, Form, Button, Card, Alert, Modal } from "react-bootstrap";
 
 const Login_Page = () => {
+  const nav = useNavigate();
+  const dispatch = useDispatch();
+  const [Email, Setemail] = useState("");
+  const [Password, Setpassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [otp, setOtp] = useState("");
+  const [newPassword, setNewPassword] = useState("");
+  const [modalEmail, setModalEmail] = useState("");
+  const [otpSent, setOtpSent] = useState(false);
+  const [otpError, setOtpError] = useState("");
 
-  const nav = useNavigate()
-  const dispatch = useDispatch()
-  const [Email, Setemail] = useState("")
-  const [Password, Setpassword] = useState("")
-
+  // Login Function
   const submitForm = async (event) => {
-
+    event.preventDefault();
     const Customerdata = new FormData(event.target);
-    const reqcustomerdata = Object.fromEntries(Customerdata.entries())
+    const reqcustomerdata = Object.fromEntries(Customerdata.entries());
 
     try {
-      let response = await loginCustomer(reqcustomerdata)
-
-      console.log(response);
-
-      let customerToken={
+      let response = await loginCustomer(reqcustomerdata);
+      let customerToken = {
         ...response.data.custData,
-        token:response.data.token
-      }
-      console.log(customerToken);
-      dispatch(isLogin(customerToken))
-      nav('/');
+        token: response.data.token,
+      };
 
+      dispatch(isLogin(customerToken));
+      nav("/");
     } catch (error) {
-      alert("please login")
-      console.log(error)
+      setErrorMessage("Invalid login credentials, please try again.");
     }
-  }
+  };
+
+  // Send OTP for Password Reset
+  const sendOtp = async () => {
+    try {
+      console.log("email",modalEmail);
+      const response = await axios.post("http://localhost:5000/api/sendOtp", { Email: modalEmail });
+      if (response.data.success) {
+        setOtpSent(true);
+        setOtpError("");
+      } else {
+        setOtpError("User not found. Please enter a valid email.");
+      }
+    } catch (error) {
+      setOtpError("Error sending OTP. Try again.");
+    }
+  };
+
+  // Reset Password
+  const resetPassword = async () => {
+    try {
+      const response = await axios.post("http://localhost:5000/api/resetPassword", {
+        Email: modalEmail,
+        otp,
+        newPassword,
+      });
+
+      if (response.data.success) {
+        alert("Password reset successfully! You can now log in.");
+        setShowModal(false);
+      } else {
+        setOtpError(response.data.message || "Invalid OTP or expired.");
+      }
+    } catch (error) {
+      setOtpError("Error resetting password. Try again.");
+    }
+  };
 
   return (
+    <Container className="d-flex justify-content-center align-items-center vh-100">
+      <Card className="p-4 shadow-lg w-50">
+        <h2 className="text-center text-primary">Login</h2>
+        {errorMessage && <Alert variant="danger">{errorMessage}</Alert>}
+        <Form onSubmit={submitForm}>
+          <Form.Group className="mb-3">
+            <Form.Label>Enter Email:</Form.Label>
+            <Form.Control
+              type="email"
+              name="Email"
+              placeholder="Email Address"
+              onChange={(e) => Setemail(e.target.value)}
+            />
+          </Form.Group>
 
-    <div className="container-fluid d-flex justify-content-center align-items-center vh-100 mt-5 ">
-      <form onSubmit={(e) => {
-        e.preventDefault()
-        submitForm(e)
-      }} className="container  vh-75 p-5 border shadow" style={{ borderRadius: '20px', width: '40%' }}>
-        <div>
-          <label className="form-label">Enter Email: </label>
-          <div>
-            <input type="email" name="Email" className="form-control" onChange={(e) => { Setemail(e.target.value) }}></input>
+          <Form.Group className="mb-4">
+            <Form.Label>Enter Password:</Form.Label>
+            <Form.Control
+              type="password"
+              name="Password"
+              placeholder="Password"
+              onChange={(e) => Setpassword(e.target.value)}
+            />
+          </Form.Group>
+
+          <div className="text-center">
+            <Button variant="success" type="submit" className="w-50">
+              Login
+            </Button>
           </div>
-        </div>
-        <div className="mt-3 mb-4">
-          <label className="form-label">Enter Password: </label>
-          <div>
-            <input type="password" name="Password" className="form-control" onChange={(e) => { Setpassword(e.target.value) }}></input>
+
+          <div className="text-center pt-3">
+            <p
+              onClick={() => nav(`/signup`)}
+              style={{ cursor: "pointer", color: "blue", textDecoration: "underline" }}
+              className="fw-bold"
+            >
+              Don't have an account? Register
+            </p>
           </div>
-        </div>
 
-        <div className="d-flex justify-content-center">
-          <button className="btn btn-outline-success w-50" >Login</button>
+          <div className="text-center pt-2">
+            <p
+              onClick={() => setShowModal(true)}
+              style={{ cursor: "pointer", color: "red", textDecoration: "underline" }}
+              className="fw-bold"
+            >
+              Forgot Password?
+            </p>
+          </div>
+        </Form>
+      </Card>
 
-        </div>
-        <div className="d-flex justify-content-end pt-2">
-          <p onClick={() => { nav(`/signup`) }} style={{ cursor: 'pointer', color: 'blue' }}>Don't have an account ? Register</p>
-        </div>
-      </form>
-    </div>
+      {/* Forgot Password Modal */}
+      <Modal show={showModal} onHide={() => setShowModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Reset Password</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          {!otpSent ? (
+            <>
+              <Form.Group className="mb-3">
+                <Form.Label>Enter Email:</Form.Label>
+                <Form.Control
+                  type="email"
+                  placeholder="Enter your email"
+                  onChange={(e) => setModalEmail(e.target.value)}
+                />
+              </Form.Group>
+              {otpError && <Alert variant="danger">{otpError}</Alert>}
+              <Button variant="primary" onClick={sendOtp}>
+                Send OTP
+              </Button>
+            </>
+          ) : (
+            <>
+              <Form.Group className="mb-3">
+                <Form.Label>Enter OTP:</Form.Label>
+                <Form.Control
+                  type="text"
+                  placeholder="Enter OTP"
+                  onChange={(e) => setOtp(e.target.value)}
+                />
+              </Form.Group>
 
-  )
-}
+              <Form.Group className="mb-3">
+                <Form.Label>New Password:</Form.Label>
+                <Form.Control
+                  type="password"
+                  placeholder="Enter new password"
+                  onChange={(e) => setNewPassword(e.target.value)}
+                />
+              </Form.Group>
 
-export default Login_Page
+              {otpError && <Alert variant="danger">{otpError}</Alert>}
+              <Button variant="success" onClick={resetPassword}>
+                Reset Password
+              </Button>
+            </>
+          )}
+        </Modal.Body>
+      </Modal>
+    </Container>
+  );
+};
+
+export default Login_Page;

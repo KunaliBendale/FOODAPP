@@ -177,15 +177,14 @@ const totalRevenue = async (req, res) => {
 const getTopDishes = async (req, res) => {
     try {
         const topDishes = await Order.aggregate([
-            // Stage 1: Match only Delivered orders
+            
             {
                 $match: { OrderStatus: "Delivered" },
             },
-            // Stage 2: Unwind the items array to break down each dish into a separate document
             {
-                $unwind: "$items", // Break down array of dishes into individual records
+                $unwind: "$items", 
             },
-             // Stage 3: Lookup dish details for more information (like name and price)
+             
              {
                 $lookup: {
                     from: "dishes", // 'dishes' collection
@@ -194,11 +193,11 @@ const getTopDishes = async (req, res) => {
                     as: "dishDetails"
                 }
             },
-            // Stage 4: Unwind the dishDetails to flatten the array
+           
             {
                 $unwind: "$dishDetails" // Each document will have a single dishDetail object
             },
-            // Stage 5: Group by dish ID to calculate total quantity and total revenue per dish
+            
             {
                 $group: {
                     _id: "$items.dishid", // Group by dish ID
@@ -206,17 +205,16 @@ const getTopDishes = async (req, res) => {
                     totalRevenue: { $sum: { $multiply: ["$items.quantity",{ $toDouble: "$dishDetails.Price" } ] } } // Calculate revenue per dish
                 }
             },
-            // Stage 4: Sort by total quantity in descending order
+            
             {
                 $sort: {
                     totalQuantity: -1
                 }
             },
-            // Stage 5: Limit to the top 10 dishes
             {
                 $limit: 5
             },
-            // Stage 6 (Optional): Lookup dish details for more information (like name)
+          
             {
                 $lookup: {
                     from: "dishes", // 'dishes' collection
@@ -225,7 +223,7 @@ const getTopDishes = async (req, res) => {
                     as: "dishDetails"
                 }
             },
-            // Stage 7 (Optional): Format the output
+          
             {
                 $project: {
                     dishId: "$_id",

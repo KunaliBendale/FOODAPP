@@ -1,0 +1,103 @@
+/* Luxurious Restaurant Background */
+.about-us-section {
+    /* background: url("https://images.pexels.com/photos/262047/pexels-photo-262047.jpeg") center/cover no-repeat; */
+    padding: 50px 20px;
+   background: url("images.jfif") center/cover no-repeat;
+    text-align: center;
+    color: rgb(255, 255, 255);
+    margin-top: 0px;
+  }
+  
+  /* Section Title */
+  .section-title {
+    font-size: 3rem;
+    font-weight: bold;
+    text-shadow: 3px 3px 12px rgba(0, 0, 0, 0.6);
+  }
+  
+  .section-title-small {
+    font-size: 1.8rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+  }
+
+  /* Section Description */
+  .section-description {
+    font-size: 1.3rem;
+    max-width: 900px;
+    margin: auto;
+    line-height: 1.7;
+  }
+  
+  /* Restaurant Highlights */
+  .highlight-box {
+  background: rgba(228, 217, 166, 0.233);
+  padding:15px;
+  
+  border-radius: 10px;
+  backdrop-filter: blur(8px);
+  /* transition: transform 0.3s ease-in-out; */
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+.highlight-box:hover {
+  transform: scale(1.05);
+}
+  .highlight-box h3 {
+    font-size: 1.8rem;
+    font-weight: bold;
+  }
+  
+  /* Chef Cards */
+   .chef-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    overflow: hidden;
+    height: 400px;
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.4);
+    /* transition: transform 0.3s ease-in-out; */
+    color: aliceblue;
+  }
+  
+  .chef-card:hover {
+    transform: scale(1.05);
+  }
+   
+
+   
+  
+  /* Chef Image Container */
+  .chef-img-container {
+    height: 250px;
+    overflow: hidden;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+    color:aliceblue
+  }
+  
+  /* Chef Image */
+  .chef-img {
+    width: 100%;
+    height: 50%;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .chef-card:hover .chef-img {
+    transform: scale(1.1);
+  }
+  
+  /* Chef Name */
+  .chef-name {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  /* Chef Description */
+  .chef-description {
+    font-size: 1.1rem;
+    padding: 10px;
+  }
+  

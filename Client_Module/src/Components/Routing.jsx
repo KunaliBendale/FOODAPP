@@ -11,36 +11,41 @@ import Signuppage from './Signuppage';
 import ProtectedRoute from './ProtectedRoute';
 import OrderDetails from './OrderDetails'
 import DishDetails from './DishDetails';
+import MyFooter from './MyFooter'
 
 const Routing = () => {
   return (
     <div>
       <BrowserRouter>
         <Mynavbar />
-        <Routes>
-          <Route path='/' element={<Homepage />} />
-          <Route path='/all_dishes' element={<All_Dishes />} />
-          <Route path='/my_orders' element={
-            <ProtectedRoute>
-            <My_Orders />
-            </ProtectedRoute>} />
-            
-          <Route path='/cart' element={
-            <ProtectedRoute>
-              <Cart />
-            </ProtectedRoute>} />
 
-          <Route path='/profile' element={
-            <ProtectedRoute>
-            <MyProfile />
-            </ProtectedRoute>} />
+        <div className='body-content'>
+          <Routes>
+            <Route path='/' element={<Homepage />} />
+            <Route path='/all_dishes' element={<All_Dishes />} />
+            <Route path='/my_orders' element={
+              <ProtectedRoute>
+                <My_Orders />
+              </ProtectedRoute>} />
 
-          <Route path='/login' element={<Login_Page />} />
-          <Route path='/signup' element={<Signuppage />} />
-          <Route path='/orderdetails' element={<OrderDetails/>}/>
-          <Route path='/dishdetails' element={<DishDetails/>}/>
+            <Route path='/cart' element={
+              <ProtectedRoute>
+                <Cart />
+              </ProtectedRoute>} />
 
-        </Routes>
+            <Route path='/profile' element={
+              <ProtectedRoute>
+                <MyProfile />
+              </ProtectedRoute>} />
+
+            <Route path='/login' element={<Login_Page />} />
+            <Route path='/signup' element={<Signuppage />} />
+            <Route path='/orderdetails' element={<OrderDetails />} />
+            <Route path='/dishdetails' element={<DishDetails />} />
+
+          </Routes>
+        </div>
+        <MyFooter/>
       </BrowserRouter>
     </div>
   )

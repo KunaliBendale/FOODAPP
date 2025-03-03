@@ -29,6 +29,6 @@ app.use("/uploads",express.static("uploads"));
  app.use("/api",OrderRoutes);
 app.use("/api",reviewRouter);
 app.use("/api",counterroutes)
-app.listen(8080,()=>{
-    console.log("Server started at 8080");
+app.listen(5000,()=>{
+    console.log("Server started at 5000");
 })

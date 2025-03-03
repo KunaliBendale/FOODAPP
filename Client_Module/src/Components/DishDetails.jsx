@@ -1,21 +1,18 @@
-import React, { useEffect } from 'react'
-import { useLocation } from 'react-router-dom'
-import { useState } from 'react';
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
+import React, { useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { Button, Modal, Card, Container, Row, Col, Form } from 'react-bootstrap';
 import { Rating } from '@smastrom/react-rating';
 import { useSelector } from 'react-redux';
 import axios from "axios";
-
+import './CSS/DishDetails.css'
 const DishDetails = () => {
-    const data = useLocation().state
+    const data = useLocation().state;
+    console.log("data",data);
+    const { userdata } = useSelector((state) => state.user);
 
-    const { userdata } = useSelector((state) => state.user)
-
-    const [rating, setRating] = useState(0)
-    const [comment, setComment] = useState("")
-
-    const [custReviews, setCustReviews] = useState([])
+    const [rating, setRating] = useState(0);
+    const [comment, setComment] = useState("");
+    const [custReviews, setCustReviews] = useState([]);
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
@@ -28,89 +25,88 @@ const DishDetails = () => {
                 Comment: comment,
                 DishId: data._id,
                 CustomerId: userdata._id
-            }
+            };
 
-            await axios.post("http://localhost:8080/api/addreview", review)
-
+            await axios.post("http://localhost:5000/api/addreview", review);
+            fetchReviews(); // Refresh reviews after adding a new one
             handleClose();
-
         } catch (error) {
             console.log(error);
         }
-    }
+    };
+
+    const fetchReviews = async () => {
+        try {
+            const result = await axios.post("http://localhost:5000/api/getreviewbydishid", { DishId: data._id });
+            const sortedReviews = result.data.data.sort((a, b) => b.Rating - a.Rating);
+            setCustReviews(sortedReviews);
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     useEffect(() => {
-        const fetchdata = async () => {
-            const result = await axios.post("http://localhost:8080/api/getreviewbydishid", { DishId: data._id })
-
-            const reviews = result.data.data;
-            // Sort reviews by Rating in descending order
-            const sortedReviews = reviews.sort((a, b) => {
-                return b.Rating - a.Rating; // If dates are the same, sort by rating (highest first)
-
-            })
-
-            setCustReviews(sortedReviews)
-            console.log(result.data.data);
-        }
-        fetchdata();
+        fetchReviews();
     }, []);
 
     return (
-        <div>
-            <div>
-                <h3>Dish Name : {data.DishName}</h3>
-                <h3>Dish Price :{data.Price}</h3>
+        <Container className="py-4">
+            <Row className="dish-details-card mx-auto">
+                {/* Dish Image */}
+                <Col md={5}>
+                    <Card.Img variant="top" src={data.Image} className="dish-img" />
+                </Col>
 
-                <button onClick={handleShow}>Add Rating</button>
+                {/* Dish Information */}
+                <Col md={7}>
+                    <Card className="p-4">
+                        <h3 className="fw-bold">{data.DishName}</h3>
+                        <h4 className="text-primary">₹{data.Price}</h4>
+                        <p><strong>Category:</strong> {data.Category}</p>
+                        <p><strong>Dish Type:</strong> {data.DishType}</p>
+                        <Button variant="primary" onClick={handleShow} className="mt-2">⭐ Add Rating</Button>
+                    </Card>
+                </Col>
+            </Row>
 
-                <Modal show={show} onHide={handleClose}>
-                    <Modal.Header closeButton>
-                        <Modal.Title>Add Rating</Modal.Title>
-                    </Modal.Header>
-                    <Modal.Body>
+            {/* Rating Modal */}
+            <Modal show={show} onHide={handleClose} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Rate This Dish</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <div className="text-center">
                         <Rating style={{ maxWidth: 250 }} value={rating} onChange={setRating} />
+                    </div>
+                    <Form.Group className="mt-3">
+                        <Form.Label>Leave a comment:</Form.Label>
+                        <Form.Control as="textarea" rows={3} onChange={(e) => setComment(e.target.value)} />
+                    </Form.Group>
+                </Modal.Body>
+                <Modal.Footer>
+                    <Button variant="secondary" onClick={handleClose}>Cancel</Button>
+                    <Button variant="primary" onClick={addRating}>Submit</Button>
+                </Modal.Footer>
+            </Modal>
 
-                        Comment: <textarea rows={4} cols={50} onChange={(e) => { setComment(e.target.value) }}>
-
-                        </textarea>
-                    </Modal.Body>
-
-                    <Modal.Footer>
-                        <Button variant="secondary" onClick={handleClose}>
-                            Close
-                        </Button>
-                        <Button variant="primary" onClick={() => { addRating(), handleClose }} >
-                            Save Changes
-                        </Button>
-                    </Modal.Footer>
-                </Modal>
-            </div>
-
-            <div>
-                {
-                    custReviews.map((review) => {
-
-                        return (
-
-                            <>
-
-                                <h3>{review.CustomerId.Name}</h3>
-                                <p>{review.DishId._id}</p>
-
+            {/* Reviews Section */}
+            <div className="mt-4">
+                <h4 className="fw-bold">Customer Reviews</h4>
+                <Row className="g-3">
+                    {custReviews.length > 0 ? custReviews.map((review, index) => (
+                        <Col md={6} key={index}>
+                            <Card className="p-3 review-card">
+                                <h6 className="fw-bold">{review.CustomerId.Name}</h6>
+                                <Rating readOnly value={review.Rating} style={{ maxWidth: 100 }} />
+                                <p className="text-muted small">{new Date(review.ReviewDate).toLocaleDateString()}</p>
                                 <p>{review.Comment}</p>
-                                <p>{review.Rating}</p>
-                                <p>{review.ReviewDate}</p>
-                            </>
-                        )
-
-                    })
-                }
+                            </Card>
+                        </Col>
+                    )) : <p className="text-muted">No reviews yet. Be the first to review!</p>}
+                </Row>
             </div>
+        </Container>
+    );
+};
 
-
-        </div>
-    )
-}
-
-export default DishDetails
+export default DishDetails;

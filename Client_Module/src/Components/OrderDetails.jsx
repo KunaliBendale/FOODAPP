@@ -1,69 +1,66 @@
-import React from 'react'
-import { useLocation } from 'react-router-dom'
-import { Image } from 'react-bootstrap'
-import axios from 'axios'
-
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+import { Image, Container, Card, Row, Col, Badge } from 'react-bootstrap';
+import './CSS/OrderDetails.css'
+import { useNavigate } from 'react-router-dom';
 const OrderDetails = () => {
-    const data = useLocation().state
+    const data = useLocation().state;
     console.log(data);
 
-    
+    const navigate = useNavigate();
+
     return (
-
-        <div className='p-4 d-flex justify-content-center'>
-            <div className='border ps-4 w-75' style={{ borderTopLeftRadius: "20px", borderBottomRightRadius: "20px" }}>
-                <div>
-                    <div className='p-3'>
-                    <div> Order Id : {data._id}</div>
-                    <div> Order Date : {data.OrderDate}</div>
-                    <div className='btn btn-secondary rounded-pill mt-2'> {data.OrderStatus}</div>
+        <Container className="order-details-section py-4">
+            <Card className="order-card mx-auto p-4">
+                {/* Order Header */}
+                <div className="text-center mb-3">
+                    <h4 className="fw-bold">🛒 Order Details</h4>
+                    <p className="text-muted">Order ID: {data._id}</p>
+                    <Badge bg="secondary" className="rounded-pill px-3 py-2">{data.OrderStatus}</Badge>
                 </div>
 
-                <div className='d-flex justify-content-around mt-3 pt-2 border-top border-bottom'>
-                    
-                    <div>
-                        <h3>Order Info</h3>
-                        <p>Total Amount : <>{data.TotalAmount}</></p>
-                        <p>No. Of Items : <>{data.NoOfItems}</></p>
+                {/* Order Summary */}
+                <Row className="order-summary py-3 px-4 border-top border-bottom">
+                    <Col md={6} className="border-end">
+                        <h5 className="fw-bold">Order Information</h5>
+                        <p><strong>Order Date:</strong> {new Date(data.OrderDate).toLocaleDateString()}</p>
+                        <p><strong>Total Amount:</strong> ₹{data.TotalAmount}</p>
+                        <p><strong>No. of Items:</strong> {data.NoOfItems}</p>
+                    </Col>
+                    <Col md={6}>
+                        <h5 className="fw-bold">Customer Details</h5>
+                        <p><strong>Name:</strong> {data.CustomerId.Name}</p>
+                        <p><strong>Contact:</strong> {data.CustomerId.Mobile}</p>
+                    </Col>
+                </Row>
 
-                    </div>
+                {/* Dishes Section */}
+                <div className="mt-4 px-4">
+                    <h5 className="fw-bold">🍽️ Ordered Dishes</h5>
+                    <Row className="g-3">
+                        {data.items.map((item, index) => (
+                           
+                            <Col md={6} key={index}>
+                                <Card className="dish-card p-2">
+                                    <Row>
+                                        <Col xs={7}>
+                                            <Image src={item.dishid.Image} className="dish-img" cursor="pointer" rounded onClick={() => navigate('/dishdetails', { state: item.dishid })} />
+                                        </Col>
+                                        <Col xs={5} className="d-flex flex-column justify-content-center">
+                                            <h6 className="fw-bold">{item.dishid.DishName}</h6>
+                                            <p className="text-muted small mb-1">Category: {item.dishid.Category}</p>
+                                            <p className="text-muted small mb-1">Type: {item.dishid.DishType}</p>
+                                            <p className="fw-bold">Qty: {item.quantity}</p>
+                                        </Col>
+                                    </Row>
+                                </Card>
+                            </Col>
+                        ))}
+                    </Row>
                 </div>
+            </Card>
+        </Container>
+    );
+};
 
-                <div className='mt-4 ps-3 mb-4'>
-                    <h5>Dishes</h5>
-                    <div className=' border d-flex justify-content-evenly '>
-                        {
-                            data.items.map((item) => {
-                                return (
-                                    <div className='d-flex ' style={{ width: "100%", height: "30vh" }}>
-                                        <div className='  w-50'>
-                                            <Image src={item.dishid.Image} style={{ height: '30vh', width: "100%", objectFit: "contain" }} rounded />
-                                        </div>  
-
-                                        <div className='border-right ps-2 pt-2 w-50'>
-                                            <h4> Dish Info. </h4>
-                                            <p style={{ fontSize: "15px" }}> Dish Name : {item.dishid.DishName}</p>
-                                            <p style={{ fontSize: "15px" }}> Dish Category : {item.dishid.Category}</p>
-                                            <p style={{ fontSize: "15px" }}> Dish type : {item.dishid.DishType}</p>
-                                            <p style={{ fontSize: "15px" }}> Quantity : {item.quantity}</p>
-
-                                        </div>
-                                    </div>
-                                )
-                            })
-                        }
-                    </div>
-                </div>
-
-                
-                </div>
-            </div>
-        </div>
-    )
-}
-
-
-export default OrderDetails
-
-
- 
+export default OrderDetails;

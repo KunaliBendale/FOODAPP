@@ -1,5 +1,5 @@
 import jwt from 'jsonwebtoken'
-//getorders placeorder profileupdate
+
 
 const authenticate = (req,res,next)=>{
     let token = req.headers.authorization;

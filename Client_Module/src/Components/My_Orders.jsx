@@ -1,58 +1,43 @@
-import axios from 'axios'
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import Tab from 'react-bootstrap/Tab';
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import Tabs from 'react-bootstrap/Tabs';
+import Tab from 'react-bootstrap/Tab';
 import Delivered from './OrderTabs/Delivered';
 import Cancelled from './OrderTabs/Cancelled';
 import InTransit from './OrderTabs/InTransit';
 import Pending from './OrderTabs/Pending';
+import { Container, Card } from 'react-bootstrap';
 
-const My_Orders = () => {
- 
-  const navigate = useNavigate()
-  const { userdata } = useSelector((state) => state.user)
+const MyOrders = () => {
+    const navigate = useNavigate();
+    const { userdata } = useSelector((state) => state.user);
+    
+    return (
+        <Container fluid className='' >
+            <Card className='shadow-lg p-3 rounded' style={{height:"90vh"}}>
+                <h3 className='text-center mb-3 fw-bold'>📦 My Orders</h3>
+                <Tabs defaultActiveKey='Delivered' className='mb-3'>
+                    <Tab eventKey='Delivered' title='✅ Delivered'>
+                        <Delivered />
+                    </Tab>
+                    <Tab eventKey='Pending' title='⏳ Pending'>
+                        <Pending />
+                    </Tab>
+                    <Tab eventKey='In Transit' title='🚚 In-Transit'>
+                        <InTransit />
+                    </Tab>
+                    <Tab eventKey='Cancelled' title='❌ Cancelled'>
+                        <Cancelled />
+                    </Tab>
+                </Tabs>
+            </Card>
+        </Container>
+    );
+};
 
-  // useEffect(() => {
-  //   const fetchorders = async () => {
-  //     const response = await axios.post("http://localhost:8080/api/getordersbycustid", {
-  //       CustomerId: userdata._id
-  //     })
-  //     console.log(response);
-
-  //     setorder(response.data.data)
-  //   }
-  //   fetchorders();
-  // }, [])
-
-  return (
-    <div className='container-fluid'>
-
-      <div>
-        <Tabs
-          defaultActiveKey="Delivered"
-          id="uncontrolled-tab-example"
-          className="mb-3"
-        >
-          <Tab eventKey="Delivered" title="Delivered">
-            <Delivered />
-          </Tab>
-          <Tab eventKey="Pending" title="Pending">
-            <Pending />
-          </Tab>
-          <Tab eventKey="In-Transit" title="In-Transit" >
-            <InTransit />
-          </Tab>
-
-          <Tab eventKey="Cancelled" title="Cancelled" >
-            <Cancelled />
-          </Tab>
-        </Tabs>
-
-      </div>
-
-
+export default MyOrders;
       {/* {
         order.map((item) => {
           return (
@@ -88,8 +73,4 @@ const My_Orders = () => {
         })
       } */}
 
-    </div>
-  )
-}
-
-export default My_Orders
+   

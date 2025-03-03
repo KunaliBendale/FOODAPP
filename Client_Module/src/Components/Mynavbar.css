@@ -1,0 +1,66 @@
+/* Navbar Base Styles */
+.custom-navbar {
+  background-color: #222; /* Dark Background */
+  padding: 10px 15px;
+}
+
+/* Brand Styling */
+.navbar-brand {
+  color: #fff !important;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Navbar Links */
+.nav-links .nav-item {
+  color: white !important;
+  margin-right: 15px;
+  font-size: 1.1rem;
+}
+
+/* Logout & Login Button */
+.logout-container {
+  margin-left: 20px;
+}
+
+.logout-btn,
+.login-btn {
+  font-size: 1rem;
+  
+}
+.login-link{
+  text-decoration: none;
+  color: white;
+}
+
+.login-link:hover{
+  color: orange;
+}
+/* Responsive Mobile Menu */
+@media (max-width: 991px) {
+  .nav-collapse {
+    position: absolute;
+    top: 60px; /* Dropdown starts from top */
+    left: 0;
+    width: 100%;
+    background: #222;
+    padding: 15px 0;
+    z-index: 1000;
+  }
+
+  .nav-links {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .nav-item {
+    padding: 10px 0;
+    font-size: 1.2rem;
+  }
+
+  .logout-container {
+    text-align: center;
+    margin-top: 10px;
+  }
+}

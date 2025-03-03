@@ -6,12 +6,15 @@ import Mynavbar from './Components/Mynavbar'
 import 'bootstrap/dist/css/bootstrap.css';
 import Routing from './Components/Routing';
 import "@smastrom/react-rating/style.css";
+
 function App() {
   
 
   return (
     <>
+    
       <Routing/>
+      
     </>
   )
 }

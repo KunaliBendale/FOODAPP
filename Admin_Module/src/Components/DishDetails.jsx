@@ -9,7 +9,7 @@ const DishDetails = () => {
 
     useEffect(()=>{
         const fetchdata= async()=>{
-            const result= await axios.post("http://localhost:8080/api/getreviewbydishid" , {DishId:data._id} )
+            const result= await axios.post("http://localhost:5000/api/getreviewbydishid" , {DishId:data._id} )
             
             const reviews = result.data.data;
             // Sort reviews by Rating in descending order

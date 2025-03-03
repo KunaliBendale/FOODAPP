@@ -1,61 +1,138 @@
-import { useState } from 'react';
+/*import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-import React, { useEffect } from 'react'
-import axios from "axios";
-import Button from 'react-bootstrap/Button';
-import Card from 'react-bootstrap/Card';
+import { useNavigate } from 'react-router-dom';
+import { Card, Container, Row, Col, Button } from 'react-bootstrap';
+import { FaStar } from "react-icons/fa";
 import { addItem } from '../Reduxwork/Cartslice';
 import { fetchDishes } from '../apicalls/dishApi.jsx';
-import { useNavigate } from 'react-router-dom';
-import { FaStar } from "react-icons/fa";
+import './CSS/AllDishes.css'
 
 const All_Dishes = () => {
-   const dispatch=useDispatch();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [cards, setCards] = useState([]);
-   const navigate= useNavigate()
+
   useEffect(() => {
     const fetchdata = async () => {
-      const response = await fetchDishes()
-      console.log(response);
+      const response = await fetchDishes();
       setCards(response.data);
-    }
+    };
     fetchdata();
-  }, [])
+  }, []);
 
-  
   return (
-    <div className="d-flex flex-wrap mt-2 ">
-            {
-                cards.map((dish)=>{
-                    return (
-                         <div className="card me-3 " style={{ width: '20%' }}>
-                             <div className="Image-div card-header  "style={{height:'55%',cursor:'pointer'}} >
-                                 <img src={dish.Image} width={200} onClick={()=>
-                                    navigate('/dishdetails',{state:dish})
-                                 }></img> 
-                             </div>
+    <Container className="all-dishes-section">
+      <h2 className="section-title text-center">🍽️ Explore Our Delicious Dishes</h2>
+      <Row className="justify-content-center">
+        {cards.map((dish, index) => (
+          <Col key={index} lg={3} md={4} sm={6} xs={12} className="mb-4">
+            <Card className="dish-card shadow-lg">
+              <div className="dish-img-container" onClick={() => navigate('/dishdetails', { state: dish })}>
+                <Card.Img variant="top" src={dish.Image} className="dish-image" />
+              </div>
+              <Card.Body className="text-center">
+                <Card.Title className="dish-name">{dish.DishName}</Card.Title>
+                <Card.Text className="dish-price">₹{dish.Price}</Card.Text>
+                <Card.Text className="dish-rating">
+                  <FaStar color="gold" className="me-1" /> {dish.averageratings.toFixed(2)}
+                </Card.Text>
+                <Button 
+                  variant="primary" 
+                  className="w-100 add-to-cart-btn"
+                  onClick={() => dispatch(addItem(dish, dish.quantity = 1))}
+                >
+                  Add To Cart
+                </Button>
+              </Card.Body>
+            </Card>
+          </Col>
+        ))}
+      </Row>
+    </Container>
+  );
+};
 
-                             <div className='card-body '>
-                                 <h5>{dish.DishName}</h5>
-                                 <p>Price : &#8377; {dish.Price} /-</p>
-                                 <span>{dish.IsAvailable}</span>
-                                 <div className='d-flex align-items-center '>
-                                 <p >Ratings : <FaStar color='yellow'className='me-1'/>{dish.averageratings.toFixed(2)}</p>
+export default All_Dishes;*/
 
-                                    </div>
-                             </div>
 
-                            <div className='card-footer'>
-                                <button className='btn btn-outline-primary w-100 mb-2' onClick={()=>{dispatch(addItem(dish,dish.quantity=1))}} > Add To Cart </button>
-                                {/* <button className='btn btn-outline-danger w-100 '><MdDeleteForever /> Remove Item</button> */}
-                            </div>
-                        </div>
-                      
-                    )
-                })
-            }
+import { useState, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { Card, Container, Row, Col, Button, Tabs, Tab } from 'react-bootstrap';
+import { FaStar } from "react-icons/fa";
+import { addItem } from '../Reduxwork/Cartslice';
+import { fetchDishes } from '../apicalls/dishApi.jsx';
+import "./CSS/AllDishes.css";
 
-        </div>
-    )
-}
-export default All_Dishes
+const All_Dishes = () => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [dishes, setDishes] = useState([]);
+  const [activeCategory, setActiveCategory] = useState("Maharashtrian");
+
+  useEffect(() => {
+    const fetchdata = async () => {
+      const response = await fetchDishes();
+      setDishes(response.data);
+    };
+    fetchdata();
+  }, []);
+
+  // Get unique food categories
+  const categories = ["Maharashtrian", "South Indian", "Punjabi", "Chinese", "Italian"];
+
+  // Filter dishes based on selected category
+  const filteredDishes = dishes.filter(dish => dish.Category === activeCategory);
+
+  return (
+    <Container fluid className="all-dishes-section">
+      <h2 className="section-title text-center">🍽️ Explore Our Delicious Dishes</h2>
+
+      {/* Food Category Tabs */}
+      <Tabs
+        id="food-category-tabs"
+        activeKey={activeCategory}
+        onSelect={(category) => setActiveCategory(category)}
+        className="mb-4 food-tabs"
+        fill
+      >
+        {categories.map((category, index) => (
+          <Tab eventKey={category} title={category} key={index}>
+            <Row className="justify-content-center">
+              {filteredDishes.length > 0 ? (
+                filteredDishes.map((dish, index) => (
+                  <Col key={index} lg={3} md={4} sm={6} xs={12} className="mb-3">
+                    <Card className="dish-card shadow-sm">
+                      <div className="dish-img-container" onClick={() => navigate('/dishdetails', { state: dish })}>
+                        <Card.Img variant="top" src={dish.Image} className="dish-image" />
+                      </div>
+                      <Card.Body className="text-center">
+                        <Card.Title className="dish-name">{dish.DishName}</Card.Title>
+                        <Card.Text className="dish-price">₹{dish.Price}</Card.Text>
+                        <Card.Text className="dish-rating">
+                          <FaStar color="gold" className="me-1" /> {dish.averageratings.toFixed(2)}
+                        </Card.Text>
+                        <Button 
+                          variant="primary" 
+                          className="w-100 add-to-cart-btn"
+                          onClick={() => dispatch(addItem(dish, dish.quantity = 1))}
+                        >
+                          Add To Cart
+                        </Button>
+                      </Card.Body>
+                    </Card>
+                  </Col>
+                ))
+              ) : (
+                <p className="text-center text-muted">No dishes available in this category.</p>
+              )}
+            </Row>
+          </Tab>
+        ))}
+      </Tabs>
+    </Container>
+  );
+};
+
+export default All_Dishes;
+

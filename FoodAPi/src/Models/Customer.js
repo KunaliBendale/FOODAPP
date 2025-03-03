@@ -1,6 +1,6 @@
 
 import mongoose from "mongoose";
-
+ 
 const CustomerSchema = mongoose.Schema({
     Name:{
         type:String,
@@ -9,6 +9,7 @@ const CustomerSchema = mongoose.Schema({
     Email:{
         type:String,
         required:[true,"Email is required"],
+       
     },
     Mobile:{
         type:String,
@@ -37,7 +38,15 @@ const CustomerSchema = mongoose.Schema({
     },
     Publicid:{
         type:String
-    }
+    },
+    otp: {
+        type: String,
+        default: null
+    },
+    otpExpires: {
+        type: Date,
+        default: null
+    },
 })
 
  export const Customer = mongoose.model("Customer",CustomerSchema);

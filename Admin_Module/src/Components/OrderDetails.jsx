@@ -1,131 +1,152 @@
-import React, { useState } from 'react'
-import { useLocation } from 'react-router-dom'
-import { Button, Form, Image } from 'react-bootstrap'
-import axios from 'axios'
-import { updateStatus } from '../apicalls/orderApi'
-
+import React, { useState } from "react";
+import { useLocation } from "react-router-dom";
+import {
+  Box,
+  Typography,
+  Paper,
+  Grid,
+  Chip,
+  Card,
+  CardMedia,
+  CardContent,
+  Button,
+  Stack,
+} from "@mui/material";
+import { updateStatus } from "../apicalls/orderApi";
 
 const OrderDetails = () => {
-    const [slectedStatus, setslectedStatus] = useState("")
+  const [selectedStatus, setSelectedStatus] = useState("");
+  const data = useLocation().state;
 
-    const data = useLocation().state
-    console.log(data);
+  if (!data) {
+    return <Typography variant="h6" color="error">No order data available</Typography>;
+  }
 
-    let updateOrderStatus = async () => {
-        try {
-            let statusReqData = {
-                orderid: data._id,
-                OrderStatus: slectedStatus
+  const updateOrderStatus = async () => {
+    try {
+      let statusReqData = {
+        orderid: data._id,
+        OrderStatus: selectedStatus,
+      };
 
-            }
-            let result = await updateStatus(statusReqData)
-            console.log(result);
-            alert("Status Updated")
-        } catch (error) {
-            console.log(error);
-        }
+      let result = await updateStatus(statusReqData);
+      console.log(result);
+      alert("Order Status Updated Successfully");
+    } catch (error) {
+      console.log(error);
+      alert("Failed to update order status");
     }
+  };
 
-    return (
+  return (
+    <Box sx={{ padding: 4 }}>
+      <Paper sx={{ padding: 3, borderRadius: 3, boxShadow: 5 }}>
+        {/* Order Details */}
+        <Typography variant="h5" fontWeight="bold" color="primary" gutterBottom>
+          Order Details
+        </Typography>
 
-        <div className='p-4 '>
-            <div className='border ps-4' style={{ borderTopLeftRadius: "20px", borderBottomRightRadius: "20px" }}>
-                <div className='p-3'>
-                    <div> Order Id : {data._id}</div>
-                    <div> Order Date : {data.formattedOrderDate}</div>
-                    <div className='btn btn-secondary rounded-pill mt-2'> {data.OrderStatus}</div>
+        <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+          <Typography>Order ID: <strong>{data._id}</strong></Typography>
+          <Typography>Order Date: <strong>{data.formattedOrderDate}</strong></Typography>
+          <Chip label={data.OrderStatus} color="secondary" variant="filled" sx={{ fontSize: "16px" }} />
+        </Box>
 
-                </div>
-                <div className='d-flex flex-row mt-3 pt-2 border-top border-bottom'>
-                    <div className='d-flex  justify-content-center'>
-                        <div>
-                        <h3>Customer Info</h3>
-                            <p > Name : {data.CustomerDetails.Name}</p>
-                            <p > Email : {data.CustomerDetails.Email}</p>
-                            <p > Mobile : {data.CustomerDetails.Mobile}</p>
-                            <p > Address : {data.CustomerDetails.Address} ({data.CustomerDetails.Pincode}) ,{data.CustomerDetails.City} ,
-                                 {data.CustomerDetails.State}</p>
+        {/* Customer & Order Info */}
+        <Grid container spacing={3} sx={{ mt: 3 }}>
+          {/* Customer Info */}
+          <Grid item xs={12} md={6}>
+            <Paper sx={{ padding: 2, borderRadius: 2, boxShadow: 2 }}>
+              <Typography variant="h6" color="primary" gutterBottom>
+                Customer Info
+              </Typography>
+              <Typography>Name: {data.CustomerDetails?.Name || "N/A"}</Typography>
+              <Typography>Email: {data.CustomerDetails?.Email || "N/A"}</Typography>
+              <Typography>Mobile: {data.CustomerDetails?.Mobile || "N/A"}</Typography>
+              <Typography>
+                Address: {data.CustomerDetails?.Address || "N/A"} ({data.CustomerDetails?.Pincode || "N/A"}), 
+                {data.CustomerDetails?.City || "N/A"}, {data.CustomerDetails?.State || "N/A"}
+              </Typography>
+            </Paper>
+          </Grid>
 
+          {/* Order Info */}
+          <Grid item xs={12} md={6}>
+            <Paper sx={{ padding: 2, borderRadius: 2, boxShadow: 2 }}>
+              <Typography variant="h6" color="primary" gutterBottom>
+                Order Info
+              </Typography>
+              <Typography>Total Amount: ₹ {data.TotalAmount || "0"}</Typography>
+              <Typography>No. of Items: {data.NoOfItems || "0"}</Typography>
+            </Paper>
+          </Grid>
+        </Grid>
 
-                        </div>
+        {/* Dishes Ordered */}
+        <Typography variant="h6" sx={{ mt: 4, mb: 2 }} color="primary">
+          Ordered Dishes
+        </Typography>
+        <Grid container spacing={2}>
+          {data.DishDetails?.map((item, index) => (
+            <Grid item xs={12} sm={6} md={4} key={index}>
+              <Card sx={{ borderRadius: 3, boxShadow: 4 }}>
+                <CardMedia
+                  component="img"
+                  height="180"
+                  image={item.Image}
+                  alt={item.DishName}
+                  sx={{ objectFit: "cover" }}
+                />
+                <CardContent>
+                  <Typography variant="subtitle1" fontWeight="bold">{item.DishName}</Typography>
+                  <Typography variant="body2">Category: {item.Category}</Typography>
+                  <Typography variant="body2">Type: {item.DishType}</Typography>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
 
-                        <div>
-                            <h3>Order Info</h3>
+        {/* Update Order Status */}
+        <Box sx={{ mt: 5, textAlign: "center" }}>
+          <Typography variant="h6" color="primary">
+            Update Order Status
+          </Typography>
 
-                            <p>Total Amount : <>{data.TotalAmount}</></p>
-                            <p>No. Of Items : <>{data.NoOfItems}</></p>
+          <Stack direction="row" spacing={2} justifyContent="center" sx={{ mt: 2 }}>
+            <Button variant="contained" color="warning" onClick={() => setSelectedStatus("Pending")}>
+            Pending
+            </Button>
+            <Button variant="contained" color="info" onClick={() => setSelectedStatus("In Transit")}>
+              In Transit
+            </Button>
+            <Button variant="contained" color="success" onClick={() => setSelectedStatus("Delivered")}>
+              Delivered
+            </Button>
+            <Button variant="contained" color="error" onClick={() => setSelectedStatus("Cancelled")}>
+              Cancelled
+            </Button>
+          </Stack>
 
-                        </div>
-                    </div>
-                </div>
+          {selectedStatus && (
+            <Typography variant="body1" sx={{ mt: 2 }}>
+              Selected Status: <strong>{selectedStatus}</strong>
+            </Typography>
+          )}
 
-                <div className='mt-4 ps-3'>
-                    <h5>Dishes</h5>
-                    <div className=' border d-flex justify-content-evenly '>
-                        {
-                            data.DishDetails.map((item) => {
-                                return (
-                                    <div className='d-flex ' style={{ width: "100%", height: "30vh" }}>
-                                        <div className=' p-3 w-50'>
-                                            <Image src={item.Image} style={{ height: '25vh', width: "100%", objectFit: "contain" }} rounded />
-                                        </div>
+          <Button
+            variant="contained"
+            color="primary"
+            sx={{ mt: 3 }}
+            onClick={updateOrderStatus}
+            disabled={!selectedStatus}
+          >
+            Update Status
+          </Button>
+        </Box>
+      </Paper>
+    </Box>
+  );
+};
 
-                                        <div className='border-right ps-2 pt-2 w-50'>
-                                            <h4> Dish Info. </h4>
-                                            <p style={{ fontSize: "15px" }}> Dish Name : {item.DishName}</p>
-                                            <p style={{ fontSize: "15px" }}> Dish Category : {item.Category}</p>
-                                            <p style={{ fontSize: "15px" }}> Dish type : {item.DishType}</p>
-
-                                        </div>
-                                    </div>
-                                )
-                            })
-                        }
-
-                    </div>
-                    {/* <div>
-                        {data.items.map((item) => {
-                            return (
-                                <div>
-                                    <p style={{ fontSize: "15px" }}> Quantity : {item.quantity}</p>
-
-                                </div>
-                            )
-                        })}
-                    </div> */}
-                </div>
-            </div>
-
-            <div>
-
-                <h3>Update Status</h3>
-                <Form.Check type='radio' label="Preparing"
-                    value="Preparing"
-                    name='status'
-                    onChange={(e) => setslectedStatus(e.target.value)} />
-
-                <Form.Check type='radio'
-                    label="In Transmit"
-                    value="In Transmit"
-                    onChange={(e) => setslectedStatus(e.target.value)}
-                    name='status' />
-
-                <Form.Check type='radio'
-                    label="Delivered"
-                    value="Delivered"
-                    onChange={(e) => setslectedStatus(e.target.value)}
-                    name='status' />
-
-                <Form.Check type='radio'
-                    label="Cancel"
-                    value="Cancelled"
-                    onChange={(e) => setslectedStatus(e.target.value)}
-                    name='status' />
-
-                <Button onClick={() => updateOrderStatus()}>Update Status</Button>
-            </div>
-
-        </div>
-    )
-}
-export default OrderDetails
+export default OrderDetails;

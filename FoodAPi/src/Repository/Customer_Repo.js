@@ -97,4 +97,7 @@ const UpdateProfile = async ({ CustomerId, Mobile, Address, City, State, Pincode
 }
 
 
+
+
+
 export { CreateCustomer, DelCustomer, doLogin, UpdateProfile, GetCustomer }
