@@ -4,7 +4,8 @@ import { isLogin } from "../Reduxwork/UserSlice";
 import { useState } from "react";
 import { loginCustomer } from "../apicalls/CustomerApi";
 import axios from "axios";
-import { Container, Form, Button, Card, Alert, Modal } from "react-bootstrap";
+import { Container, Form, Button, Card, Alert, Modal  } from "react-bootstrap";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const Login_Page = () => {
   const nav = useNavigate();
@@ -18,6 +19,8 @@ const Login_Page = () => {
   const [modalEmail, setModalEmail] = useState("");
   const [otpSent, setOtpSent] = useState(false);
   const [otpError, setOtpError] = useState("");
+  const [showPassword, setShowPassword] = useState(false); 
+  const [showNewPassword, setShowNewPassword] = useState(false);
 
   // Login Function
   const submitForm = async (event) => {
@@ -91,14 +94,29 @@ const Login_Page = () => {
             />
           </Form.Group>
 
-          <Form.Group className="mb-4">
+           <Form.Group className="mb-4" style={{ position: "relative" }}>
             <Form.Label>Enter Password:</Form.Label>
             <Form.Control
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="Password"
               placeholder="Password"
+              value={Password}
               onChange={(e) => Setpassword(e.target.value)}
             />
+            <span
+              onClick={() => setShowPassword(!showPassword)}
+               style={{
+                position: "absolute",
+                top: "65%",
+                right: "12px",
+                transform: "translateY(-50%)",
+                cursor: "pointer",
+                fontSize: "1.3rem",
+                color: "#555",
+              }}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </span>
           </Form.Group>
 
           <div className="text-center">
@@ -161,13 +179,27 @@ const Login_Page = () => {
                 />
               </Form.Group>
 
-              <Form.Group className="mb-3">
+               <Form.Group className="mb-3" style={{ position: "relative" }}>
                 <Form.Label>New Password:</Form.Label>
                 <Form.Control
-                  type="password"
+                  type={showNewPassword ? "text" : "password"}
                   placeholder="Enter new password"
                   onChange={(e) => setNewPassword(e.target.value)}
                 />
+                <span
+                  onClick={() => setShowNewPassword(!showNewPassword)}
+                  style={{
+                    position: "absolute",
+                    top: "65%",
+                    right: "12px",
+                    transform: "translateY(-50%)",
+                    cursor: "pointer",
+                    fontSize: "1.3rem",
+                    color: "#555",
+                  }}
+                >
+                  {showNewPassword ? <FaEyeSlash /> : <FaEye />}
+                </span>
               </Form.Group>
 
               {otpError && <Alert variant="danger">{otpError}</Alert>}

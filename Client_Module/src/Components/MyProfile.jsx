@@ -2,14 +2,17 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { Modal, Button, Form } from "react-bootstrap";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const MyProfile = () => {
   const { userdata } = useSelector((state) => state.user);
-  
+
   // State for modals
   const [showProfileModal, setShowProfileModal] = useState(false);
   const [showPasswordModal, setShowPasswordModal] = useState(false);
-  
+  const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+
   // State for form fields
   const [profileData, setProfileData] = useState({
     Name: userdata.Name,
@@ -154,22 +157,68 @@ const MyProfile = () => {
         </Modal.Header>
         <Modal.Body>
           <Form>
-            <Form.Group className="mb-2">
+            {/* Old Password Field */}
+            <Form.Group className="mb-3 position-relative">
               <Form.Label>Old Password</Form.Label>
-              <Form.Control type="password" value={passwordData.oldPassword} onChange={(e) => setPasswordData({ ...passwordData, oldPassword: e.target.value })} />
+              <Form.Control
+                type={showPassword ? "text" : "password"}
+                value={passwordData.oldPassword}
+                onChange={(e) =>
+                  setPasswordData({ ...passwordData, oldPassword: e.target.value })
+                }
+              />
+              <div
+                onClick={() => setShowPassword(!showPassword)}
+                style={{
+                  position: "absolute",
+                  top: "65%",
+                  right: "10px",
+                  transform: "translateY(-50%)",
+                  cursor: "pointer",
+                  fontSize: "1.3rem",
+                  color: "#6c757d",
+                }}
+              >
+                {showPassword ? <FaEyeSlash /> : <FaEye />}
+              </div>
             </Form.Group>
-            <Form.Group className="mb-2">
+
+            {/* New Password Field */}
+            <Form.Group className="mb-2 position-relative">
               <Form.Label>New Password</Form.Label>
-              <Form.Control type="password" value={passwordData.newPassword} onChange={(e) => setPasswordData({ ...passwordData, newPassword: e.target.value })} />
+              <Form.Control
+                type={showNewPassword ? "text" : "password"}
+                value={passwordData.newPassword}
+                onChange={(e) =>
+                  setPasswordData({ ...passwordData, newPassword: e.target.value })
+                }
+              />
+              <div
+                onClick={() => setShowNewPassword(!showNewPassword)}
+                style={{
+                  position: "absolute",
+                  top: "65%",
+                  right: "10px",
+                  transform: "translateY(-50%)",
+                  cursor: "pointer",
+                  fontSize: "1.3rem",
+                  color: "#6c757d",
+                }}
+              >
+                {showNewPassword ? <FaEyeSlash /> : <FaEye />}
+              </div>
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowPasswordModal(false)}>Cancel</Button>
-          <Button variant="primary" onClick={handlePasswordUpdate}>Update</Button>
+          <Button variant="secondary" onClick={() => setShowPasswordModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handlePasswordUpdate}>
+            Update
+          </Button>
         </Modal.Footer>
       </Modal>
-
     </div>
   );
 };

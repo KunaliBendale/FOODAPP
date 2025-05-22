@@ -2,14 +2,14 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Navigate } from 'react-router-dom'
 
-const ProtectedRoute = ({children}) => {
-    const {login}=useSelector((state)=>state.user)
-
+const ProtectedRoute = ({ children }) => {
+  const { login } = useSelector((state) => state.user)
+  console.log("login", login);
   return (
     <div>
-        {
-            login?<div>{children}</div>: < Navigate to= '/login'/>
-        }
+      {
+        login ? <div>{children}</div> : < Navigate to='/login' />
+      }
     </div>
   )
 }

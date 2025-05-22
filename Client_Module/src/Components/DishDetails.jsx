@@ -90,7 +90,7 @@ const DishDetails = () => {
             </Modal>
 
             {/* Reviews Section */}
-            <div className="mt-4">
+            {/* <div className="mt-4">
                 <h4 className="fw-bold">Customer Reviews</h4>
                 <Row className="g-3">
                     {custReviews.length > 0 ? custReviews.map((review, index) => (
@@ -104,7 +104,7 @@ const DishDetails = () => {
                         </Col>
                     )) : <p className="text-muted">No reviews yet. Be the first to review!</p>}
                 </Row>
-            </div>
+            </div> */}
         </Container>
     );
 };
